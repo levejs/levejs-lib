@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Testes para o projeto Leve.js</title>
 
-    <script src="caminho para sua proposta de script com as classes"></script>
+    <!-- Caminho para sua proposta de script com as classes -->
+    <script src="script.js"></script>
+
+    <!-- Importa a biblioteca mustache.js para usarmos o padrão Mustache {{variavel}} -->
+    <script src="https://unpkg.com/mustache@latest"></script>
 </head>
 <body>
     <h2>Exemplos que devem funcionar com o script adicionado no head deste html</h2>
@@ -17,7 +21,20 @@
     Esta não: [[var1]]<br>
 
     <script>
-        // Adicione aqui o código que um usuário utilizaria para realizar as tarefas que pretende demonstrar.
+        let manipular = new ManipularHTML();
+
+    // Substituição de variáveis de maneira direta
+        //manipular.substituirVariaveis("app", "[[var1]]", "Mário");
+
+    // Substituição de variáveis utilizando o padrão Mustache. Primeiro precisamos ajustar as variáveis para o padrão {{variavel}}
+        manipular.substituirVariaveis("app", "[[var1]]", "{{var1}}");
+        let objeto = {
+            var1: "Mário"
+        };
+        manipular.substituirVariaveisMustache("app", objeto);
+        
+    // Substituição de variáveis utilizando tags <span>
+        manipular.substituirVariaveisSpan("app", "var1", "Mário");
     </script>
 </body>
 </html>
