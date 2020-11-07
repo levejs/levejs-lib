@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Testes para o projeto Leve.js</title>
-
-    <script src="caminho para sua proposta de script com as classes"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.0/mustache.min.js"></script>
+    <script src="script.js"></script>
 </head>
 <body>
     <h2>Exemplos que devem funcionar com o script adicionado no head deste html</h2>
@@ -17,7 +17,11 @@
     Esta não: [[var1]]<br>
 
     <script>
-        // Adicione aqui o código que um usuário utilizaria para realizar as tarefas que pretende demonstrar!.
+        let manipula = new Manipulation();
+        manipula.convert_var('app', '[[var1]]', '{{var1}}');
+        manipula.change_var('app', {var1: 'Value var'});
+        manipula.change_span("app", "var1", "Change value span");
+        manipula.element_manipulation('app', 'Mudando conteúdo da DIV', 5);
     </script>
 </body>
 </html>
