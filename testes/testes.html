@@ -21,20 +21,24 @@
     Esta não: [[var1]]<br>
 
     <script>
-        let manipular = new ManipularHTML();
+        let app = new ManipularHTML("app");
 
-    // Substituição de variáveis de maneira direta
-        //manipular.substituirVariaveis("app", "[[var1]]", "Mário");
+    // Substituição de variáveis de forma direta utilizando <string>.replaceALL().
+        //app.substituirVariaveis("[[var1]]", "Mário");
 
-    // Substituição de variáveis utilizando o padrão Mustache. Primeiro precisamos ajustar as variáveis para o padrão {{variavel}}
-        manipular.substituirVariaveis("app", "[[var1]]", "{{var1}}");
+    // Substituição de variáveis utilizando o padrão Mustache. Primeiro precisaremos ajustar as variáveis para o padrão {{variavel}}.
+        app.substituirVariaveis("[[var1]]", "{{var1}}");
         let objeto = {
             var1: "Mário"
         };
-        manipular.substituirVariaveisMustache("app", objeto);
-        
-    // Substituição de variáveis utilizando tags <span>
-        manipular.substituirVariaveisSpan("app", "var1", "Mário");
+        app.substituirVariaveisMustache(objeto);
+
+    // Substituição de variáveis utilizando tags <span>.
+        app.substituirVariaveisSpan("var1", "Mário");
+
+    // Restauração de determinado estado do elemento
+        let estado = 1;
+        //app.restaurarEstado(estado);
     </script>
 </body>
 </html>
