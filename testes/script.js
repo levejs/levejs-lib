@@ -5,7 +5,7 @@ class Alterar{
 	document.getElementById(id).innerHTML=mudanca;
 }
      
-//#issue 2
+//#issue 2 t
 	mudarVariavel(id,variavel,mudanca){
 		var str = document.getElementById("app").innerHTML; 
 		var res = str.replace(variavel, mudanca);
