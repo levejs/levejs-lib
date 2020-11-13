@@ -5,20 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Testes para o projeto Leve.js</title>
 
-    <script src="caminho para sua proposta de script com as classes"></script>
+    <script src="../leve.js"></script>
 </head>
 <body>
     <h2>Exemplos que devem funcionar com o script adicionado no head deste html</h2>
     <div id="app">
         A variável ao lado deve ser substituída por outro valor: [[var1]]<br>
-
+        E eu tenho [[outra]], e mais [[outra]]<br>
         E esta forma de variável? <span l:var="var1"></span> <br> Seria possível buscar por um atributo especial?
+    </div>
+    <hr>
+    <div id="app2">
+        [[oi]]
     </div>
     Esta não: [[var1]]<br>
 
     <script>
         // Adicione aqui o código que um usuário utilizaria para realizar as tarefas que pretende demonstrar!.
+        let x = new Leve('app', {var1: 'Felipe', outra: 'Um teste'});
+        new Leve('app2', {oi: 'Olá, mundo!'});
     </script>
-    Tirando dúvida da Cristina
 </body>
 </html>
