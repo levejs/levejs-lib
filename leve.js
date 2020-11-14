@@ -1,5 +1,23 @@
 class Leve {
+    // Registro do Leve é estático
+    // Precisei criar para facilitar os eventListeners
+    // conseguirem alterar estados.
+    // focuson serve para manter o foco no input
+    // que está em uso pelo usuário.
+    static focuson = undefined;
+    static leve_reg = {};
+    
+    static register(el){
+        Leve.leve_reg[el._id] = el;
+    }
+    
+    static by_id(id){
+        return Leve.leve_reg[id];
+    }
+
+    // Métodos e propriedades de instância
     constructor(id, dynamic_props={}){
+        this._id = id;
         this._app = document.getElementById(id);
         this._d_state = dynamic_props;  // Propriedades reativas
         
@@ -25,10 +43,49 @@ class Leve {
         
         // Abaixo armazeno o estado original do app,
         // para fins de restauração quando necessário atualizar a tela.
-        this._memento = this._app.innerHTML;
+        
+        this._memento = this._app.innerHTML;               
+        
+        this.put_binds();
+        
+        Leve.register(this);
         
         this.update();
     }
+    
+    // Métodos para registro global dos objetos.
+    
+    
+    
+    
+    
+    // Métodos para vínculos entre elementos
+    
+    put_binds(){
+        for(let el of this._app.children){
+            if(el.getAttribute('l:bind') != undefined){
+                el.setAttribute('value', this[el.getAttribute('l:bind')]);
+                
+                //console.log('Tentando adicionar o evento');
+                
+                this._app.addEventListener('input', function(evt){
+                    let el = evt.target;
+                    
+                    // Por enquanto estamos limitados
+                    // a campos na raiz do app.
+                    if(el.parentElement != null){
+                        const ep = Leve.by_id(el.parentElement.id);
+
+                        ep[el.getAttribute('l:bind')] = el.value;
+                        Leve.register(ep);
+                    }
+                });
+            }
+        }
+    }
+    
+    // Métodos para renderizar a tela
+    
     update(){
         this.update_by_marks();
         this.update_by_attributes();
@@ -58,14 +115,42 @@ class Leve {
                 this._app.innerHTML = final;
             }
         }
-        //window.setInterval(this.run, 1000, this);
+        
     }
     reset(){
+        // Quem possuia o foco do usuário antes do render?
+        Leve.focuson = document.activeElement.id;
+        
+        // Salvando estado dos inputs antes de renderizar.
+        let save = {};
+        let i = 0;
+        for(const el of this._app.children){
+            if(el.getAttribute('l:bind') != undefined){
+                save[i] = el.value;
+                i++;
+            }
+        }
+    
         this._app.innerHTML = this._memento;
         this.update();
-    }
-    run(obj){
         
+        // Restaurando estado dos inputs
+        i = 0;
+        for(const el of this._app.children){
+            if(el.getAttribute('l:bind') != undefined){
+                el.value = save[i];
+                i++;
+            }
+        }
+        
+        // Restaurando o foco no elemento
+        if(Leve.focuson != '')
+            document.getElementById(Leve.focuson).focus();
+    }
+    
+    // Método para ações de timeout ou interval
+    run(obj){
+       
     }
     
 }
@@ -73,4 +158,5 @@ class Leve {
 /*
     {'var1': 'Reperquilson é o cara', 'var2': 1984}
 */
+
 
