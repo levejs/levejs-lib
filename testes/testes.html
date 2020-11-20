@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Testes para o projeto Leve.js</title>
 
-    <!-- Caminho para sua proposta de script com as classes -->
-    <script src="script.js"></script>
+    <!-- Caminho para o script com as classes -->
+    <script src="../leve.js"></script>
 
     <!-- Importa a biblioteca mustache.js para usarmos o padrão Mustache {{variavel}} -->
     <script src="https://unpkg.com/mustache@latest"></script>
@@ -14,31 +14,44 @@
 <body>
     <h2>Exemplos que devem funcionar com o script adicionado no head deste html</h2>
     <div id="app">
-        A variável ao lado deve ser substituída por outro valor: [[var1]]<br>
-
-        E esta forma de variável? <span l:var="var1"></span> <br> Seria possível buscar por um atributo especial?
+        A variável ao lado deve ser substituída por outro valor: {{var1}}<br>
+        Esta outra também: {{var2}}<br>
+        E esta forma de variável? <span l:var="var1"></span> <br> Seria possível buscar por um atributo especial?<br>
+        O mesmo para esta: <span l:var="var2"></span><br>
     </div>
-    Esta não: [[var1]]<br>
+    <hr>
+    <div id="app2">
+        {{ola}}
+    </div>
+    <hr>
+    Esta não: {{var1}}<br>
 
     <script>
-        let app = new ManipularHTML("app");
-
-    // Substituição de variáveis de forma direta utilizando <string>.replaceALL().
-        //app.substituirVariaveis("[[var1]]", "Mário");
-
-    // Substituição de variáveis utilizando o padrão Mustache. Primeiro precisaremos ajustar as variáveis para o padrão {{variavel}}.
-        app.substituirVariaveis("[[var1]]", "{{var1}}");
         let objeto = {
-            var1: "Mário"
+            var1: "AAAAA",
+            var2: "BBBBB",
+            ola: "OLÁ, MUNDO!"
         };
-        app.substituirVariaveisMustache(objeto);
 
-    // Substituição de variáveis utilizando tags <span>.
-        app.substituirVariaveisSpan("var1", "Mário");
+        let app = new Leve("app", objeto);
+        let app2 = new Leve("app2", objeto);
+        
+        window.setTimeout(() => {
+            app.var1 = "CCCCC";
+            app.var2 = "DDDDD";
+            app2.ola = "BOM DIA!";
+        }, 1500);
+        window.setTimeout(() => {
+            app.var1 = "EEEEE";
+            app.var2 = "FFFFF";
+            app2.ola = "BOA TARDE!";
+        }, 2500);
+        window.setTimeout(() => {
+            app.var1 = "GGGGG";
+            app.var2 = "HHHHH";
+            app2.ola = "BOA NOITE!";
+        }, 3500);
 
-    // Restauração de determinado estado do elemento
-        let estado = 1;
-        //app.restaurarEstado(estado);
     </script>
 </body>
 </html>
