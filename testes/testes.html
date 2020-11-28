@@ -7,24 +7,32 @@
 
     <!-- Caminho para o script com as classes -->
     <script src="../leve.js"></script>
-
-    <!-- Importa a biblioteca mustache.js para usarmos o padrão Mustache {{variavel}} -->
-    <script src="https://unpkg.com/mustache@latest"></script>
 </head>
 <body>
     <h2>Exemplos que devem funcionar com o script adicionado no head deste html</h2>
     <div id="app">
-        A variável ao lado deve ser substituída por outro valor: {{var1}}<br>
-        Esta outra também: {{var2}}<br>
-        E esta forma de variável? <span l:var="var1"></span> <br> Seria possível buscar por um atributo especial?<br>
-        O mesmo para esta: <span l:var="var2"></span><br>
+        - Div app:<br>
+        [[ola]]<br>
+        A variável ao lado deve ser substituída por outro valor: [[var1]]<br>
+        Esta outra também: [[var2]]<br>
+        E esta forma de variável? <span l:var="var1"></span><br>
+        Seria possível buscar por um atributo especial?<br>
+        O mesmo para estas: <span l:var="var2"></span><br>
+        <span l:var="ola"></span><br><br>
+        Altera var1 de app: <input id="texto1" l:bind="var1" type="text"><br><br>
+        Altera var2 de app: <input id="texto2" l:bind="var2" type="text"><br><br>
+        Altera ola de app: <input id="texto3" l:bind="ola" type="text">
     </div>
     <hr>
     <div id="app2">
-        {{ola}}
+        - Div app2:<br>
+        [[ola]]<br>
+        <span l:var="ola"></span>
+        <br><br>
+        Altera ola de app2: <input id="texto4" l:bind="ola" type="text">
     </div>
     <hr>
-    Esta não: {{var1}}<br>
+    Estas não: [[var1]] [[var2]] [[ola]]
 
     <script>
         let objeto = {
@@ -32,10 +40,13 @@
             var2: "BBBBB",
             ola: "OLÁ, MUNDO!"
         };
+        let objeto2 = {
+            ola: "OLÁ, MUNDO!"
+        };
 
         let app = new Leve("app", objeto);
-        let app2 = new Leve("app2", objeto);
-        
+        let app2 = new Leve("app2", objeto2);
+
         window.setTimeout(() => {
             app.var1 = "CCCCC";
             app.var2 = "DDDDD";
@@ -49,6 +60,7 @@
         window.setTimeout(() => {
             app.var1 = "GGGGG";
             app.var2 = "HHHHH";
+            app.ola = "ATÉ MAIS!";
             app2.ola = "BOA NOITE!";
         }, 3500);
 
