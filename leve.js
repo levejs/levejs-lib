@@ -1,11 +1,11 @@
 // Classe que permitirá manipular o HTML.
 class Leve {
-    // O método construtor receberá o id do elemento que será manipulado, e um objeto com um "mapa de variáveis".
-    constructor(id, mapaDeVariaveis) {
-        this._elemento = document.getElementById(id);       // Armazena o elemento de id informado.
-        this._memento = this._elemento.innerHTML;           // Armazena o estado original daquele elemento.
-        this._variaveis = mapaDeVariaveis;                  // Armazena o mapa de variáveis (propriedades) de um objeto.
-        
+    // O método construtor receberá o id do elemento que será manipulado e um objeto que contém um "mapa de variáveis".
+    constructor(id, objeto) {
+        this._elemento = document.getElementById(id);   // Armazena o elemento.
+        this._memento = this._elemento.innerHTML;       // Armazena o estado original do elemento para fins de restauração quando necessário.
+        this._variaveis = objeto;                       // Armazena o mapa de variáveis do objeto.
+
         // Percorre os nomes das variáveis.
         for(let nomeVar of Object.keys(this._variaveis)) {
             // Vincula cada variável à instância atual, permitindo obter (get), atualizar (set) e renderizar "this.atualizarElemento()" o seu valor ao ocorrerem mudanças nas variáveis.
@@ -19,14 +19,14 @@ class Leve {
                 }
             });
         }
-
+        
         this.sincronizarInputs();
 
         this.atualizarElemento();
         
     }
 
-    // Sincroniza o conteúdo dos inputs de texto com as variáveis do elemento.
+    // Sincroniza o valor das variáveis do elemento com o conteúdo dos inputs de texto.
     sincronizarInputs() {
         let pai = this._elemento;
         let filhos = pai.getElementsByTagName("input");
