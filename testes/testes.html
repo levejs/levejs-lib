@@ -35,17 +35,14 @@
     Estas não: [[var1]] [[var2]] [[ola]]
 
     <script>
-        let objeto = {
+        let app = new Leve("app", {
             var1: "AAAAA",
             var2: "BBBBB",
             ola: "OLÁ, MUNDO!"
-        };
-        let objeto2 = {
+        });
+        let app2 = new Leve("app2", {
             ola: "OLÁ, MUNDO!"
-        };
-
-        let app = new Leve("app", objeto);
-        let app2 = new Leve("app2", objeto2);
+        });
 
         window.setTimeout(() => {
             app.var1 = "CCCCC";
