@@ -33,32 +33,19 @@
     </div>
     <hr>
     Estas não: [[var1]] [[var2]] [[ola]]
-    <hr>
-    <div id="app3">
-        - Div app3:<br>
-        <form>
-            Receber dados que vem de fora do app3<br>
-            <label for="fname">First name:</label><br>
-            <input id="fname" name="fname" type="text"><br>
-            <label for="lname">Last name:</label><br>
-            <input id="lname" name="lname" type="text">
-        </form>
-    </div>
-    <hr>
-    <div id="app4">
-        - Div app4:<br>
-        Em app4 há algum atributo que será enviado para app3.
-    </div>
 
     <script>
-        let app = new Leve("app", {
+        let objeto = {
             var1: "AAAAA",
             var2: "BBBBB",
             ola: "OLÁ, MUNDO!"
-        });
-        let app2 = new Leve("app2", {
+        };
+        let objeto2 = {
             ola: "OLÁ, MUNDO!"
-        });
+        };
+
+        let app = new Leve("app", objeto);
+        let app2 = new Leve("app2", objeto2);
 
         window.setTimeout(() => {
             app.var1 = "CCCCC";
