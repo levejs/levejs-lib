@@ -1,27 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Testes para o projeto Leve.js</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.0/mustache.min.js"></script>
-    <script src="script.js"></script>
-</head>
-<body>
-    <h2>Exemplos que devem funcionar com o script adicionado no head deste html</h2>
-    <div id="app">
-        A variável ao lado deve ser substituída por outro valor: [[var1]]<br>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Teste Leve.js</title>
 
-        E esta forma de variável? <span l:var="var1"></span> <br> Seria possível buscar por um atributo especial?
+    <!-- Caminho para o script com as classes -->
+    <script src="leve.js"></script>
+  </head>
+  <style>
+    #app,
+    #app2,
+    #app3 {
+      background: #deeeff;
+      font-family: sans-serif;
+      font-weight: 600;
+      padding: 0 0 0 15px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+    input {
+      border-radius: 5px;
+      padding: 0 3px;
+    }
+  </style>
+  <body>
+    <h2>
+      Exemplos que devem funcionar com o script adicionado no head deste html
+    </h2>
+    <div id="app">
+      - Div app:<br />
+      [[input_3]]<br />
+      A variável ao lado deve ser substituída por outro valor: [[input_1]]<br />
+      Esta outra também: [[input_2]]<br />
+      E esta forma de variável? <span l:var="input_1"></span><br />
+      Seria possível buscar por um atributo especial?<br />
+      O mesmo para estas: <span l:var="input_2"></span><br />
+      <span l:var="input_3"></span><br /><br />
+      Altera input_1 de app:
+      <input id="texto1" m:bind="input_1" type="text" /><br /><br />
+      Altera input_2 de app:
+      <input id="texto2" m:bind="input_2" type="text" /><br /><br />
+      Altera input_3 de app: <input id="texto3" m:bind="input_3" type="text" />
     </div>
-    Esta não: [[var1]]<br>
+    <hr />
+    <div id="app2">
+      - Div app2:<br />
+      [[input_3]]<br />
+      <span l:var="input_3"></span>
+      <br /><br />
+      Altera input_3 de app2: <input id="texto4" m:bind="input_3" type="text" />
+    </div>
+    <hr />
+    <div id="app3">
+      - Div app3:<br />
+      [[input_1]]<br />
+      [[input_2]]<br />
+      [[input_3]]<br />
+      <br /><br />
+      Altera input_1 de app3:
+      <input id="texto5" m:bind="input_1" type="text" /><br /><br />
+      Altera input_2 de app3:
+      <input id="texto6" m:bind="input_2" type="text" /><br /><br />
+      Altera input_3 de app3:
+      <input id="texto7" m:bind="input_3" type="text" />
+    </div>
+    <hr />
+    Estas não: [[input_1]] [[input_2]] [[input_3]]
 
     <script>
-        let manipula = new Manipulation();
-        manipula.convert_var('app', '[[var1]]', '{{var1}}');
-        manipula.change_var('app', {var1: 'Value var'});
-        manipula.change_span("app", "var1", "Change value span");
-        manipula.element_manipulation('app', 'Mudando conteúdo da DIV', 5);
+      let app = new Leve("app", {
+        input_1: "Computação",
+        input_2: "JavaScript",
+        input_3: "Olá, sou Michelle",
+      });
+      let app2 = new Leve("app2", {
+        input_3: "Estudo computação!",
+      });
+      let app3 = new Leve("app3", {
+        input_1: "Teste1",
+        input_2: "Teste2",
+        input_3: "Teste3",
+      });
+
+      window.setTimeout(() => {
+        app.input_1 = "manhã";
+        app.input_2 = "morning";
+        app2.input_3 = "Olá, Michelle. Bom dia!";
+      }, 2000);
+      window.setTimeout(() => {
+        app.input_1 = "tarde";
+        app.input_2 = "afternoon";
+        app2.input_3 = "Olá, Michelle. Boa tarde";
+      }, 1500);
+      window.setTimeout(() => {
+        app.input_1 = "Noite";
+        app.input_2 = "night";
+        app.input_3 = "Até logo!";
+        app2.input_3 = "Olá, Michelle. Boa noite!";
+      }, 1000);
     </script>
-</body>
+  </body>
 </html>
