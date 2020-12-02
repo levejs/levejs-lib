@@ -105,7 +105,7 @@ class Leve {
 
     }
 
-    // Renderiza os valores das variáveis dentro do conteúdo de tags <span> que possuírem o valor do atributo "l:var" igual ao nome da variável.
+    // Renderiza os valores das variáveis dentro do conteúdo de tags <span> que possuírem o valor do atributo "m:var" igual ao nome da variável.
     substituirVariaveisSpan() {
         let pai = this._elemento;
         let filhos = pai.getElementsByTagName("span");
@@ -114,8 +114,8 @@ class Leve {
         for (let span of filhos) {
             // Percorre os nomes das variáveis.
             for (let nomeVar of Object.keys(this._variaveis)) {
-                // Se o valor do atributo "l:var" de uma tag <span> for igual ao nome de uma variável.
-                if (span.getAttribute("l:var") == nomeVar) {
+                // Se o valor do atributo "m:var" de uma tag <span> for igual ao nome de uma variável.
+                if (span.getAttribute("m:var") == nomeVar) {
                     // O conteúdo daquela tag <span> torna-se o valor daquela variável.
                     span.innerHTML = this[nomeVar];
                 }
