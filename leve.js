@@ -16,10 +16,13 @@ class Leve {
     }
 
     // Métodos e propriedades de instância
-    constructor(id, dynamic_props={}){
+    // connections: [{'attp': 'nome', 'idr': 'app2', 'attr': 'oi'}]
+    constructor(id, dynamic_props={}, conections=[]){
         this._id = id;
         this._app = document.getElementById(id);
         this._d_state = dynamic_props;  // Propriedades reativas
+        this._conns = conections;
+        this._obs = [];
         
         // Uma forma de vincular os atributos à instância
         // de forma não reativa
@@ -53,11 +56,30 @@ class Leve {
         this.update();
     }
     
-    // Métodos para registro global dos objetos.
+    registrarNosObservados(){
+        for(let conf of this._conns){
+            let componente = Leve.by_id(conf['idr']);
+            componente.addObservador(this);
+        }
+    }
     
+    addObservador(observador){    
+        this._obs.push(observador);
+    }
     
+    notifyObservadores(){
+        for(let obs of this._obs){
+            obs.update_obs(this);
+        }
+    }
     
-    
+    update_obs(vigiado){
+        for(let conf of this._conns){
+            if(conf['idr'] == vigiado._id){
+                this[conf['attp']] = vigiado[conf['attr']]
+            }
+        }
+    }
     
     // Métodos para vínculos entre elementos
     
@@ -146,6 +168,8 @@ class Leve {
         // Restaurando o foco no elemento
         if(Leve.focuson != '')
             document.getElementById(Leve.focuson).focus();
+            
+        this.notifyObservadores();
     }
     
     // Método para ações de timeout ou interval

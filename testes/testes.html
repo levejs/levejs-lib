@@ -29,8 +29,9 @@
 
     <script>
         // Adicione aqui o código que um usuário utilizaria para realizar as tarefas que pretende demonstrar!.
-        let x = new Leve('app', {var1: 'Felipe', outra: 'Um teste'});
+        let x = new Leve('app', {var1: 'Felipe', outra: 'Um teste'}, [{'attp': 'var1', 'idr': 'app2', 'attr': 'oi'}]);
         let y = new Leve('app2', {oi: 'Olá, mundo!'});
+        x.registrarNosObservados();
         
         
         // Prova de conceito sobre a atualização dinâmica da renderização
