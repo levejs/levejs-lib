@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste para Issue 5</title>
+    
+</head>
+
+<body>
+    Algumas funções básicas precisam ser propostas no GitHub.
+
+A Issue #5 foi lançada, e esta atividade consiste em entregar código que proponha solução para o problema.
+
+Se baseando em padrões de projeto, será que é possível que componentes troquem informações? Você talvez ache interessante consultar o Command ou o Observer, e propor meio de implementá-los na sua solução.
+
+Lembre-se de adequar sua proposta a orientação a objeto, permitindo planejar o uso de padrões de projeto.
+
+Há um arquivo para teste no branch "main". Lembre-se de trabalhar no branch com seu nome.
+
+Ao final, lembre-se de responder esta atividade  com link do github do projeto direcionado ao seu branch (acesse-o, copie, e cole aqui ;-) )
+
+<br><br>
+<div id="app1">
+    [[dado_externo_a_app1]]
+</div>
+
+<div id="app2">
+    <input l:bind="var1" type="text" id="texto1" >
+    <button id="botao" onclick="mudancaAoClicar('app1','app2','texto1')">Enviar para app 1</button>
+</div>
+<hr>
+<div id="app3">
+    [[dado_externo_a_app1]]
+</div>
+
+<div id="app4">
+    <input l:bind="var1" type="text" id="texto2" oninput="MudancaSemClique('app3','app4','texto2')">
+   
+</div>
+
+</body>
+<script type="text/javascript" >
+
+
+function mudancaAoClicar(id1,id2,inputId){
+    let id_1 = document.getElementById(id1);
+    let id_2 = document.getElementById(id2);
+    
+    
+    
+    let texto;
+    for(let item of id_2.children){
+        if(item.id == inputId)
+      texto = item.id;
+      
+    }
+    
+    id_1.innerHTML = document.getElementById(texto).value;
+    document.getElementById(texto).value = "";
+    }
+    
+    function MudancaSemClique(id1,id2,inputId){
+    let id_1 = document.getElementById(id1);
+    let id_2 = document.getElementById(id2);
+    
+    let primeiraVersaoDiv = id_1.textContent;
+    let texto;
+    for(let item of id_2.children){
+        if(item.id == inputId)
+       texto = item.id;
+      
+    }
+    
+    id_1.innerHTML = document.getElementById(texto).value;
+    
+    }
+    
+    
+    
+    
+</script>
+</html>
