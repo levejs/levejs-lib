@@ -1,23 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Testes para o projeto Leve.js</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Teste Leve.js</title>
 
-    <script src="caminho para sua proposta de script com as classes"></script>
-</head>
-<body>
-    <h2>Exemplos que devem funcionar com o script adicionado no head deste html</h2>
+    <!-- Caminho para o script com as classes -->
+    <script src="leve.js"></script>
+  </head>
+  
+  <body>
+    <h2>
+      Exemplos que devem funcionar com o script adicionado no head deste html
+    </h2>
     <div id="app">
-        A variável ao lado deve ser substituída por outro valor: [[var1]]<br>
-
-        E esta forma de variável? <span l:var="var1"></span> <br> Seria possível buscar por um atributo especial?
+      - Div app:<br />
+      [[input_3]]<br />
+      A variável ao lado deve ser substituída por outro valor: [[input_1]]<br />
+      Esta outra também: [[input_2]]<br />
+      E esta forma de variável? <span l:var="input_1"></span><br />
+      Seria possível buscar por um atributo especial?<br />
+      O mesmo para estas: <span l:var="input_2"></span><br />
+      <span l:var="input_3"></span><br /><br />
+      Altera input_1 de app:
+      <input id="texto1" l:bind="input_1" type="text" /><br /><br />
+      Altera input_2 de app:
+      <input id="texto2" l:bind="input_2" type="text" /><br /><br />
+      Altera input_3 de app: <input id="texto3" l:bind="input_3" type="text" />
     </div>
-    Esta não: [[var1]]<br>
+    <hr />
+    <div id="app2">
+      - Div app2:<br />
+      [[input_3]]<br />
+      <span l:var="input_3"></span>
+      <br /><br />
+      Altera input_3 de app2: <input id="texto4" l:bind="input_3" type="text" />
+    </div>
+    <hr />
+    <div id="app3">
+      - Div app3:<br />
+      [[input_1]]<br />
+      [[input_2]]<br />
+      [[input_3]]<br />
+      <br /><br />
+      Altera input_1 de app3:
+      <input id="texto5" l:bind="input_1" type="text" /><br /><br />
+      Altera input_2 de app3:
+      <input id="texto6" l:bind="input_2" type="text" /><br /><br />
+      Altera input_3 de app3:
+      <input id="texto7" l:bind="input_3" type="text" />
+    </div>
+    <hr />
+    Estas não: [[input_1]] [[input_2]] [[input_3]]
 
     <script>
-        // Adicione aqui o código que um usuário utilizaria para realizar as tarefas que pretende demonstrar!.
+      let app = new Leve("app", {
+        input_1: "Hello",
+        input_2: "Hola",
+        input_3: "Olá",
+      });
+      let app2 = new Leve("app2", {
+        input_3: "Olá",
+      });
+      let app3 = new Leve("app3", {
+        input_1: "Abraços",
+        input_2: "Hello",
+        input_3: "Oi amigo",
+      });
+
+      window.setTimeout(() => {
+        app.input_1 = "Oi";
+        app.input_2 = "Como está?";
+        app2.input_3 = "Bom dia!";
+      }, 2000);
+      window.setTimeout(() => {
+        app.input_1 = "Oi";
+        app.input_2 = "Como está?";
+        app2.input_3 = "Boa tarde";
+      }, 1500);
+      window.setTimeout(() => {
+        app.input_1 = "Volto logo";
+        app.input_2 = "Tchau";
+        app.input_3 = "Bye";
+        app2.input_3 = "Boa noite!";
+      }, 1000);
     </script>
-</body>
+  </body>
 </html>
