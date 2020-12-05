@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste para Issue 5</title>
+    
+</head>
+
+<body>
+    Algumas funções básicas precisam ser propostas no GitHub.
+
+A Issue #5 foi lançada, e esta atividade consiste em entregar código que proponha solução para o problema.
+
+Se baseando em padrões de projeto, será que é possível que componentes troquem informações? Você talvez ache interessante consultar o Command ou o Observer, e propor meio de implementá-los na sua solução.
+
+Lembre-se de adequar sua proposta a orientação a objeto, permitindo planejar o uso de padrões de projeto.
+
+Há um arquivo para teste no branch "main". Lembre-se de trabalhar no branch com seu nome.
+
+Ao final, lembre-se de responder esta atividade  com link do github do projeto direcionado ao seu branch (acesse-o, copie, e cole aqui ;-) )
+
+<br><br>
+
+<div id="app1"> <!--Esse mudara apenas após clicar no retangulo.-->
+    [[dado_externo_a_app1]] <!--Texto que ira mudar-->
+</div>
+
+<div id="app2">
+    <input l:bind="var1" type="text" id="txt1" >
+    <button id="botao" onclick="Clicar('app1','app2','txt1')">Enviar para app 1</button><!--Faz mudar o texto ao clickar no botão-->
+</div>
+
+<hr><!--Linha para dividir os modelos-->
+
+<div id="app3"> <!--Esse mudara ao mesmo tempo que você digitar.-->
+    [[dado_externo_a_app3]] <!--Texto que ira mudar-->
+</div>
+
+<div id="app4">
+    <input l:bind="var1" type="text" id="txt2" oninput="SemClique('app3','app4','txt2')"> <!--oninput é uma função que encontrei que qualquer coisa
+    que você digite seja registrado automaticamente, assim fiz um mudaria ao mesmo tempo que digita-se já que não entendi bem oq a questão pedia-->
+   
+</div>
+</body>
+
+<script type="text/javascript">
+    function Clicar(id1,id2,inputId){ //Primeiro modelo em que ira mudar apenas ao clickar
+        let id_1 = document.getElementById(id1);
+        let id_2 = document.getElementById(id2);
+    
+        let txt;
+        for(let item of id_2.children){
+            if(item.id == inputId)
+            txt = item.id;  
+        }
+    
+        id_1.innerHTML = document.getElementById(txt).value;
+        document.getElementById(txt).value = ""; //Após você clickar no botão para mudar a palavra, 
+                                                 //o quadradinho que você escreveu a nova palavra ira se apagar.
+    }
+    
+    function SemClique(id3,id4,inputId){ //Segundo modelo que ira mudar conforme você digita
+        let id_3 = document.getElementById(id3);
+        let id_4 = document.getElementById(id4);
+        
+        let txt;
+        for(let item of id_4.children){
+            if(item.id == inputId)
+        txt = item.id; 
+        }
+        
+        id_3.innerHTML = document.getElementById(txt).value;
+    
+    }
+</script>
+</html>
