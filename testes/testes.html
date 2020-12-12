@@ -12,69 +12,110 @@
     <h2>Exemplos que devem funcionar com o script adicionado no head deste html</h2>
     <div id="app">
         - Div app:<br>
-        [[ola]]<br>
-        A variável ao lado deve ser substituída por outro valor: [[var1]]<br>
-        Esta outra também: [[var2]]<br>
-        E esta forma de variável? <span l:var="var1"></span><br>
-        Seria possível buscar por um atributo especial?<br>
-        O mesmo para estas: <span l:var="var2"></span><br>
-        <span l:var="ola"></span><br><br>
-        Altera var1 de app: <input id="texto1" l:bind="var1" type="text"><br>
-        Altera var2 de app: <input id="texto2" l:bind="var2" type="text"><br>
-        Altera ola de app: <input id="texto3" l:bind="ola" type="text">
+        <div style="margin-left:1cm">
+            [[ola]]<br>
+            A variável ao lado deve ser substituída por outro valor: [[var1]]<br>
+            Esta outra também: [[var2]]<br>
+            E esta forma de variável? <span l:var="var1"></span><br>
+            Seria possível buscar por um atributo especial?<br>
+            O mesmo para estas: <span l:var="var2"></span><br>
+            <span l:var="ola"></span><br><br>
+            Altera var1 de app: <input id="texto1" l:bind="var1" type="text"><br>
+            Altera var2 de app: <input id="texto2" l:bind="var2" type="text"><br>
+            Altera ola de app: <input id="texto3" l:bind="ola" type="text">
+        </div>
     </div>
     <hr>
     <div id="app2">
         - Div app2:<br>
-        [[ola]]<br>
-        <span l:var="ola"></span>
-        <br><br>
-        Altera ola de app2: <input id="texto4" l:bind="ola" type="text">
+        <div style="margin-left:1cm">
+            [[ola]]<br>
+            <span l:var="ola"></span>
+            <br><br>
+            Altera ola de app2: <input id="texto4" l:bind="ola" type="text">
+        </div>
     </div>
     <hr>
     Estas não: [[var1]] [[var2]] [[ola]]
     <hr>
     <div id="app3">
         - Div app3:<br>
-        Receber dados que vem de fora do app3<br>
-        [[var1]]
+        <div style="margin-left:1cm">
+            Receber dados que vem de fora do app3<br>
+            [[var1]]
+        </div>
     </div>
     <hr>
     <div id="app4">
         - Div app4:<br>
-        Em app4 há algum atributo que será enviado para app3.<br>
-        [[var1]]<br>
-        [[ola]]<br>
-        <input id="texto5" l:bind="var1" type="text"><br>
-        <input id="texto6" l:bind="ola" type="text">
+        <div style="margin-left:1cm">
+            Em app4 há algum atributo que será enviado para app3.<br>
+            [[var1]]<br>
+            [[ola]]<br>
+            <input id="texto5" l:bind="var1" type="text"><br>
+            <input id="texto6" l:bind="ola" type="text">
+        </div>
+    </div>
+    <hr>
+    <div id="app5">
+        - Div app5:<br>
+        <div style="margin-left:1cm">
+            Insira um código HTML ao lado: [[html1]]<br>
+            Insira um código HTML ao lado: [[html2]]<br>
+            Insira um código HTML ao lado: [[html3]]<br>
+            Insira um código HTML ao lado: [[html4]]
+        </div>
     </div>
     
     <script>
-        let app = new Leve("app", {
-            var1: "AAAAA",
-            var2: "BBBBB",
-            ola: "OLÁ, MUNDO!" }, [
-            { varObservador: "var1", idVigiado: "app3", varVigiada: "var1" },
-            { varObservador: "ola", idVigiado: "app2", varVigiada: "ola" } ]
+        let app = new Leve("app",
+            {
+                var1: "AAAAA",
+                var2: "BBBBB",
+                ola: "OLÁ, MUNDO!"
+            },
+            [
+                { varObservador: "var1", idVigiado: "app3", varVigiada: "var1" },
+                { varObservador: "ola", idVigiado: "app2", varVigiada: "ola" }
+            ]
         );
 
-        let app2 = new Leve("app2", {
-            ola: "OLÁ, MUNDO!" }, [
-            { varObservador: "ola", idVigiado: "app4", varVigiada: "ola" } ]
+        let app2 = new Leve("app2",
+            {
+                ola: "OLÁ, MUNDO!"
+            },
+            [
+                { varObservador: "ola", idVigiado: "app4", varVigiada: "ola" }
+            ]
         );
 
-        let app3 = new Leve("app3", {
-            var1: "AAAAA" }, [
-            { varObservador: "var1", idVigiado: "app4", varVigiada: "var1" } ]
+        let app3 = new Leve("app3",
+            {
+                var1: "AAAAA"
+            },
+            [
+                { varObservador: "var1", idVigiado: "app4", varVigiada: "var1" }
+            ]
         );
 
-        let app4 = new Leve("app4", {
-            var1: "BBBBB", ola: "OLÁ" }
+        let app4 = new Leve("app4",
+            {
+                var1: "BBBBB", ola: "OLÁ"
+            }
         );
 
         app.estaObservando();
         app2.estaObservando();
         app3.estaObservando();
+        
+        let app5 = new Leve("app5",
+            {
+                html1: "<button style='color:white;background:red'><b>BOTÃO</b></button>",
+                html2: "<input type='button' value='BOTÃO' style='color:white;background:blue'>",
+                html3: "<input type='checkbox'><input type='checkbox' checked>",
+                html4: "<input type='radio'><input type='radio' checked>"
+            }
+        );
 
         window.setTimeout(() => {
             app.var1 = "CCCCC";

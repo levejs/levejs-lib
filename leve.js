@@ -2,7 +2,7 @@
 class Leve {
     static registro = {};       // Armazena os elementos que utilizarem o Leve.
 
-    // O método construtor recebe o id do elemento que será manipulado, um objeto que contém um "mapa de variáveis" e um array de objetos que contém um "mapa de conexões".
+    // O método construtor recebe o id do elemento que será manipulado, um objeto que contém um "mapa de variáveis" e um array de objetos que contém um ou mais "mapas de conexões".
     // variaveis = { <var1>: "---", <var2>: "---", <var3>: "---", ... }
     // conexoes = [ { varObservador: "---", idVigiado: "---", varVigiada: "---" }, {...}, ... ]
     constructor(id, variaveis={}, conexoes=[]) {
@@ -10,9 +10,9 @@ class Leve {
         this._elemento = document.getElementById(id);   // Armazena este elemento.
         this._memento = this._elemento.innerHTML;       // Armazena o estado original deste elemento para fins de restauração quando necessário.
         this._variaveis = variaveis;                    // Armazena um mapa de variáveis.
-        this._conexoes = conexoes;                      // Armazena um mapa de conexões.
+        this._conexoes = conexoes;                      // Armazena os mapas de conexões.
         this._observadores = [];                        // Armazena os "elementos observadores" deste elemento.
-
+        
         // Percorre os nomes das variáveis.
         for(let nomeVar of Object.keys(this._variaveis)) {
             // Vincula cada variável à instância atual, permitindo obter (get), atualizar (set) e renderizar "this.atualizarElemento()" o seu valor ao ocorrerem mudanças nas variáveis.
@@ -40,8 +40,10 @@ class Leve {
         let pai = this._elemento;
         let filhos = pai.getElementsByTagName("input");
         
+        // Adiciona um evento de "input" aos inputs de texto.
         pai.addEventListener("input", (evento) => {
             filhos = evento.target;
+            // O valor de determinada varíavel torna-se o conteúdo do input de texto.
             this[filhos.getAttribute("l:bind")] = filhos.value;
         });
         
@@ -124,7 +126,7 @@ class Leve {
 
     // Adiciona os "elementos observadores" na lista de observadores dos "elementos vigiados".
     estaObservando() {
-        // Percorre cada conexão do "elemento observador".
+        // Percorre cada mapa de conexões dos "elementos observadores".
         for(let conexao of this._conexoes) {
             let vigiado = Leve.registro[conexao["idVigiado"]];
             vigiado._observadores.push(this);
@@ -143,18 +145,20 @@ class Leve {
     
     // Atualiza a variável do "elemento observador" de acordo com as conexões feitas pelo usuário.
     atualizar(vigiado) {
-        // Percorre cada conexão do "elemento observador".
+        // Percorre cada mapa de conexões dos "elementos observadores".
         for(let conexao of this._conexoes) {
+            // Se o id presente no mapa de conexões for igual ao id de um "elemento vigiado".
             if(conexao["idVigiado"] == vigiado._id && vigiado[conexao["varVigiada"]] != undefined) {
+                // O valor da "variável do observador" torna-se o valor da "variável vigiada".
                 this[conexao["varObservador"]] = vigiado[conexao["varVigiada"]];
             }
         }
 
     }
-    
+
     // Substitui todo o conteúdo de um elemento por um novo conteúdo.
     substituirConteudo(novoConteudo) {
         this._elemento.innerHTML = novoConteudo;
     }
-
+    
 }
