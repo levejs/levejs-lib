@@ -19,8 +19,8 @@
         Seria possível buscar por um atributo especial?<br>
         O mesmo para estas: <span l:var="var2"></span><br>
         <span l:var="ola"></span><br><br>
-        Altera var1 de app: <input id="texto1" l:bind="var1" type="text"><br><br>
-        Altera var2 de app: <input id="texto2" l:bind="var2" type="text"><br><br>
+        Altera var1 de app: <input id="texto1" l:bind="var1" type="text"><br>
+        Altera var2 de app: <input id="texto2" l:bind="var2" type="text"><br>
         Altera ola de app: <input id="texto3" l:bind="ola" type="text">
     </div>
     <hr>
@@ -33,16 +33,48 @@
     </div>
     <hr>
     Estas não: [[var1]] [[var2]] [[ola]]
-
+    <hr>
+    <div id="app3">
+        - Div app3:<br>
+        Receber dados que vem de fora do app3<br>
+        [[var1]]
+    </div>
+    <hr>
+    <div id="app4">
+        - Div app4:<br>
+        Em app4 há algum atributo que será enviado para app3.<br>
+        [[var1]]<br>
+        [[ola]]<br>
+        <input id="texto5" l:bind="var1" type="text"><br>
+        <input id="texto6" l:bind="ola" type="text">
+    </div>
+    
     <script>
         let app = new Leve("app", {
             var1: "AAAAA",
             var2: "BBBBB",
-            ola: "OLÁ, MUNDO!"
-        });
+            ola: "OLÁ, MUNDO!" }, [
+            { varObservador: "var1", idVigiado: "app3", varVigiada: "var1" },
+            { varObservador: "ola", idVigiado: "app2", varVigiada: "ola" } ]
+        );
+
         let app2 = new Leve("app2", {
-            ola: "OLÁ, MUNDO!"
-        });
+            ola: "OLÁ, MUNDO!" }, [
+            { varObservador: "ola", idVigiado: "app4", varVigiada: "ola" } ]
+        );
+
+        let app3 = new Leve("app3", {
+            var1: "AAAAA" }, [
+            { varObservador: "var1", idVigiado: "app4", varVigiada: "var1" } ]
+        );
+
+        let app4 = new Leve("app4", {
+            var1: "BBBBB", ola: "OLÁ" }
+        );
+
+        app.estaObservando();
+        app2.estaObservando();
+        app3.estaObservando();
 
         window.setTimeout(() => {
             app.var1 = "CCCCC";

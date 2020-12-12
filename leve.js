@@ -1,10 +1,17 @@
 // Classe que permitirá manipular o HTML.
 class Leve {
-    // O método construtor receberá o id do elemento que será manipulado e um objeto que contém um "mapa de variáveis".
-    constructor(id, objeto) {
-        this._elemento = document.getElementById(id);   // Armazena o elemento.
-        this._memento = this._elemento.innerHTML;       // Armazena o estado original do elemento para fins de restauração quando necessário.
-        this._variaveis = objeto;                       // Armazena o mapa de variáveis do objeto.
+    static registro = {};       // Armazena os elementos que utilizarem o Leve.
+
+    // O método construtor recebe o id do elemento que será manipulado, um objeto que contém um "mapa de variáveis" e um array de objetos que contém um "mapa de conexões".
+    // variaveis = { <var1>: "---", <var2>: "---", <var3>: "---", ... }
+    // conexoes = [ { varObservador: "---", idVigiado: "---", varVigiada: "---" }, {...}, ... ]
+    constructor(id, variaveis={}, conexoes=[]) {
+        this._id = id;                                  // Armazena o id deste elemento.
+        this._elemento = document.getElementById(id);   // Armazena este elemento.
+        this._memento = this._elemento.innerHTML;       // Armazena o estado original deste elemento para fins de restauração quando necessário.
+        this._variaveis = variaveis;                    // Armazena um mapa de variáveis.
+        this._conexoes = conexoes;                      // Armazena um mapa de conexões.
+        this._observadores = [];                        // Armazena os "elementos observadores" deste elemento.
 
         // Percorre os nomes das variáveis.
         for(let nomeVar of Object.keys(this._variaveis)) {
@@ -23,14 +30,16 @@ class Leve {
         this.sincronizarInputs();
 
         this.atualizarElemento();
-        
+
+        Leve.registro[this._id] = this;
+
     }
 
     // Sincroniza o valor das variáveis do elemento com o conteúdo dos inputs de texto.
     sincronizarInputs() {
         let pai = this._elemento;
         let filhos = pai.getElementsByTagName("input");
-
+        
         pai.addEventListener("input", (evento) => {
             filhos = evento.target;
             this[filhos.getAttribute("l:bind")] = filhos.value;
@@ -47,24 +56,27 @@ class Leve {
         let pai = this._elemento;
         let filhos = pai.getElementsByTagName("input");
 
-        // Armazena o conteúdo dos inputs de texto num array, antes de renderizar a mudança numa variável.
+        // Armazena o conteúdo dos inputs de texto num objeto, antes de renderizar a mudança numa variável.
         // Isso deve feito para que o conteúdo digitado pelo usuário seja restaurado mais tarde.
-        let conteudoInputs = [];
+        let conteudoInputs = {};
+        let i = 0;
         for(let input of filhos) {
             if(input.getAttribute("l:bind") != undefined) {
-                conteudoInputs.push(input.value);
+                conteudoInputs[i] = input.value;
+                i++;
             }
         }
-
-        // Restaura o estado original do elemento para que o método "substituirVariaveisMarcadas()" funcione corretamente.
-        this._elemento.innerHTML = this._memento;
+        
+        // Restaura o estado original do elemento para que a renderização do método "substituirVariaveisMarcadas()" funcione corretamente.
+        this.substituirConteudo(this._memento);
 
         // Métodos de renderização de variáveis.
         this.substituirVariaveisMarcadas();
         this.substituirVariaveisSpan();
+        this.atualizarObservador();
 
         // Restaura o conteúdo dos inputs de texto, a medida que a mudança numa variável é renderizada. Com isso, o conteúdo já digitado pelo usuário irá permanecer no input de texto enquanto ele está digitando.
-        let i = 0;
+        i = 0;
         for(let input of filhos) {
             if(input.getAttribute("l:bind") != undefined) {
                 input.value = conteudoInputs[i];
@@ -73,15 +85,10 @@ class Leve {
         }
         
         // Restaura o foco no elemento, a medida que a mudança numa variável é renderizada. Com isso, o input de texto irá permanecer em foco enquanto o usuário está digitando.
-        if(foco != '') {
+        if(foco != "") {
             document.getElementById(foco).focus();
         }
-        
-    }
 
-    // Substitui todo o conteúdo de um elemento por um novo conteúdo.
-    substituirConteudo(novoConteudo) {
-        this._elemento.innerHTML = novoConteudo;
     }
 
     // Renderiza os valores das variáveis no lugar de variáveis marcadas com colchetes "[[variavel]]" que possuírem o mesmo nome da variável.
@@ -113,6 +120,41 @@ class Leve {
             }
         }
 
+    }
+
+    // Adiciona os "elementos observadores" na lista de observadores dos "elementos vigiados".
+    estaObservando() {
+        // Percorre cada conexão do "elemento observador".
+        for(let conexao of this._conexoes) {
+            let vigiado = Leve.registro[conexao["idVigiado"]];
+            vigiado._observadores.push(this);
+        }
+
+    }
+
+    // Atualiza um "elemento observador" quando ocorrer uma mudança numa "variável vigiada" por ele.
+    atualizarObservador() {
+        // Percorre cada "elemento observador" da lista de observadores de um "elemento vigiado".
+        for(let obs of this._observadores) {
+            obs.atualizar(this);
+        }
+
+    }
+    
+    // Atualiza a variável do "elemento observador" de acordo com as conexões feitas pelo usuário.
+    atualizar(vigiado) {
+        // Percorre cada conexão do "elemento observador".
+        for(let conexao of this._conexoes) {
+            if(conexao["idVigiado"] == vigiado._id && vigiado[conexao["varVigiada"]] != undefined) {
+                this[conexao["varObservador"]] = vigiado[conexao["varVigiada"]];
+            }
+        }
+
+    }
+    
+    // Substitui todo o conteúdo de um elemento por um novo conteúdo.
+    substituirConteudo(novoConteudo) {
+        this._elemento.innerHTML = novoConteudo;
     }
 
 }
