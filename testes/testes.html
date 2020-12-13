@@ -1,24 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Testes para o projeto Leve.js</title>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Testes para o projeto Leve.js</title>
+		<script src="leve.js"></script>
+	</head>
 
-    <script src="caminho para sua proposta de script com as classes"></script>
-</head>
-<body>
-    <h2>Exemplos que devem funcionar com o script adicionado no head deste html</h2>
-    <div id="app">
-        A variável ao lado deve ser substituída por outro valor: [[var1]]<br>
+	<body>
+		<h2>Exemplos que devem funcionar com o script adicionado no head deste html</h2>
+		<div id="app">
+			A variável ao lado deve ser substituída por outro valor: [[var1]]<br>
+			E esta forma de variável? <span l:var="var1"></span> <br> Seria possível buscar por um atributo especial?
+			<input id="text2" l:bind="input_2" type="text" /><br /><br />
 
-        E esta forma de variável? <span l:var="var1"></span> <br> Seria possível buscar por um atributo especial?
-    </div>
-    Esta não: [[var1]]<br>
-
-    <script>
-        // Adicione aqui o código que um usuário utilizaria para realizar as tarefas que pretende demonstrar!.
-    </script>
-    Tirando dúvida da Cristina
-</body>
+		</div>
+		Esta não: [[var1]]<br>
+		<div id="app2" > Vai dar certo  O Q?</div>
+		<div id="app3"> [var2] deve ser substituida?</div>
+		<div id="app4"> [var3] não deve ser substituida?</div>
+		<div id="app5"> [var4] deve ser substituida?</div>
+   
+		<script>
+			// Adicione aqui o código que um usuário utilizaria para realizar as tarefas que pretende demonstrar!.
+		</script>
+		Tirando dúvida da Cristina
+	</body>
 </html>
