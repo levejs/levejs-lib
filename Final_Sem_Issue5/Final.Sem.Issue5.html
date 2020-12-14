@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Teste Leve.js</title>
+        <script src="leve.js"></script>
+  </head>
+  
+  <body>
+    <div id="app">
+      
+      * Div app:<br />
+      <br>
+      [[input_3]]<br />
+      A variável ao lado deve ser substituída por outro valor: [[input_1]]<br />
+      Esta outra também: [[input_2]]<br />
+      E esta forma de variável? <span l:var="input_1"></span><br />
+      Seria possível buscar por Um atributo especial?<br />
+      O mesmo para estas: <span l:var="input_2"></span><br />
+      <span l:var="input_3"></span><br /><br />
+      Modifica input_1 de app:
+      <input id="text1" l:bind="input_1" type="text" /><br /><br />
+      Modifica input_2 de app:
+      <input id="text2" l:bind="input_2" type="text" /><br /><br />
+      Modifica input_3 de app: <input id="text3" l:bind="input_3" type="text" />
+    </fieldset>
+    </div>
+   <br>
+   <hr />
+    <div id="app3">
+        * Div app3:<br />
+        <br>
+      [[input_1]]<br />
+      [[input_2]]<br />
+      [[input_3]]<br />
+      <br /><br />
+      Modifica input_1 de app3:
+      <input id="text5" l:bind="input_1" type="text" /><br /><br />
+      Modifica input_2 de app3:
+      <input id="text6" l:bind="input_2" type="text" /><br /><br />
+      Modifica input_3 de app3:
+      <input id="text7" l:bind="input_3" type="text" />
+    </fieldset>
+    </div>
+    <hr />
+    Modificar apenas quando escrever: [[input_1]],[[input_2]] e [[input_3]]
+    <div>
+      <h3>Issue #6</h3>
+      <div id="app6">
+
+      </div><br>
+      <div id="app8">
+    
+      </div>
+      
+      <div id="app7">
+          <input l:bind="var1" placeholder="Digite seu código html...." type="text" id="text">
+         
+    </div>
+    <script>
+        let app = new Leve("app", {
+        input_1: "(. . .)",
+        input_2: "L.P.2 é D+!",
+        input_3: "Leve.js",
+      });
+      
+      let app3 = new Leve("app3", {
+        input_1: "value_1",
+        input_2: "value_2",
+        input_3: "value_3",
+      });
+
+      let app6 = new Leve("app6", {
+        input_1: "valor1",
+        input_2: "valor2",
+        input_3: "valor3",
+      });
+
+      let html = '<h1>Proposta para Issue #6</h1><h2>injetando tags html via codigo js</h2><h3>Isso pode ajudar muito no desenvolvimento front-end</h3>';
+      app6.setHTML("app6",html);
+
+      function MudancaSemClique(id1,id2,inputId){
+        let id_1 = document.getElementById(id1);
+        let id_2 = document.getElementById(id2);
+        
+        let primeiraVersaoDiv = id_1.textContent;
+        let texto;
+        for(let item of id_2.children){
+            if(item.id == inputId)
+          texto = item.id;
+          
+        }
+        
+        id_1.innerHTML = document.getElementById(texto).value;
+      }
+
+      const inputOnPress = document.getElementById('text');
+      inputOnPress.addEventListener('keyup', function(e){
+        var key = e.which || e.keyCode;
+        if (key == 13) { 
+        MudancaSemClique('app8','app7','text');
+        document.getElementById('text').value='';
+        }
+      });
+
+      window.setTimeout(() => {
+        app.input_1 = "Um";
+        app.input_2 = "Dois";
+        app2.input_3 = "Três";
+      }, 3000);
+      window.setTimeout(() => {
+        app.input_1 = "Três";
+        app.input_2 = "Dois";
+        app2.input_3 = "Um";
+      }, 2000);
+      window.setTimeout(() => {
+        app.input_1 = "Dois";
+        app.input_2 = "Três";
+        app.input_3 = "Um";
+        app2.input_3 = "Bom dia!";
+      }, 1000);
+    </script>
+  </body>
+  </html>
