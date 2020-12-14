@@ -1,84 +1,96 @@
-
 class App {
-	constructor(){}
-  
-	run(){
-    let estado =false;
-    
-		let obj= new Alterar();
-    obj.refletirEstado('app');
-    obj.mudarVariavel('app2','var1','SUCESSO');   
+	constructor() {}
 
+	run() {
+		let obj = new Leve('app');
+    obj.armazenar('texto4');
+   	obj.comunicacaoComponentes("app2");
+    //obj.onclick(console.log("qq"));
+		//obj.armazenar('app5');
+		//obj.mudarEmTempo();
 	}
 }
 
-class Alterar {
 
-	constructor(){	let idRefletor,mudanca1,variavel1;}
-  
-//#issue 1
-	mudarId( id,mudanca){
-    this.mudanca1=mudanca;
-		document.getElementById(id).innerHTML=mudanca;
-    this.refletirEstado1();
-      //  teste=mudanca;
-    
+class Leve {
+
+	constructor(){
+		this.obs = [];
 	}
-     
-//#issue 2
-	mudarVariavel(id,variavel,mudanca){
-    this.mudanca1=mudanca;
-    this.variavel1=variavel;
 
-		let str = document.getElementById(id).innerHTML; 
+	
+	//#issue 1
+	mudarId(id, mudanca) {
+		document.getElementById(id).innerHTML = mudanca;
+	}
+
+	//#issue 2
+	mudarVariavel(id, variavel, mudanca) {
+		let str = document.getElementById(id).innerHTML;
 		let res = str.replace(variavel, mudanca);
 		document.getElementById(id).innerHTML = res;
-    this.refletirEstado2();
-
 	}
-  
- //#issue 3
-  armazenarEstado(id){
-		let vetor=[];
-  	setInterval(
-    	function armazenar(){
-      	for(var i=0;i<10;i++){
-   				if(vetor[i]==null){
-      			vetor[i]=document.getElementById(id).innerHTML; 
-        		break;
-     			}
-      	}
-    	},15000);
-  }
-  
-  //#issue 4
-	refletirEstado(idRefletido){
-  	this.idRefletor=idRefletido;
+
+
+	//#issue 3
+	armazenar(id){
+	let i=0;
+		let b=false;
     
-		if(this.idRefletor !=null){
-    	this.estado=true;
-    }   
-	} 
-  
-  refletirEstado1(){
-  	if(this.estado==true){
-    	document.getElementById(this.idRefletor).innerHTML=this.mudanca1;
-    }
-  }
-  
-  refletirEstado2(){
-  	if(this.estado==true){
-    	let str = document.getElementById(this.idRefletor).innerHTML; 
-			let res = str.replace(this.variavel1, this.mudanca1);
-			document.getElementById(this.idRefletor).innerHTML = res;
-    }
-  }
+		while(b==false){
+			if(this.obs[i]==undefined){
+				this.obs[i]= document.getElementById(id);
+				b=true;
+			}
+		i++;
+		}
+   
+			
+	}
+
+
+	//#issue4
+
+	mudarEmTempo(id){  
+		let v=[];
+ 		let max=this.obs.length;
+		v=this.obs;
+     
+		setInterval((
+			function tss(){
+				for(let e of document.getElementById(id).children){
+					if(e.getAttribute('l:bind') != undefined){
+						for(let i=0;i<max;i++){
+						v[i].innerHTML=e.value;
+						}
+					}
+				}
+			}),100);
+		}
+    
+    
+   //#issue5
+   
+   comunicacaoComponentes(id){
+   		let v=[];
+			v=this.obs;
+			setInterval((
+				function r(){
+					for(let e of document.getElementById(id).children){
+						if(e.getAttribute('l:bind') != undefined){
+  						document.getElementById("let").addEventListener("click", function() {	
+	 							for(let i=0;i<1;i++){
+  								v[i].placeholder = e.value;
+  							}
+  					}); 
+					}
+			}
+   }),1000);    
+	}
+}   
+    
+window . onload  =  function ( )  {
+	app  =  new  App ( ) ;
+	app . run ( ) ;
 }
 
-
-
-
-window.onload = function() {
-	app = new App();
-	app.run();
-}
