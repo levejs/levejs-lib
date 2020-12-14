@@ -1,24 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Testes para o projeto Leve.js</title>
-
-    <script src="caminho para sua proposta de script com as classes"></script>
-</head>
-<body>
-    <h2>Exemplos que devem funcionar com o script adicionado no head deste html</h2>
+    <script src="../leve.js"></script>
+  </head>
+  <body>
+    <h2>
+      Exemplos que devem funcionar com o script adicionado no head deste html
+    </h2>
     <div id="app">
-        A variável ao lado deve ser substituída por outro valor: [[var1]]<br>
-
-        E esta forma de variável? <span l:var="var1"></span> <br> Seria possível buscar por um atributo especial?
+      - Div app: [[ola]]<br />
+      A variável ao lado deve ser substituída por outro valor: [[var1]]<br />
+      Esta outra também: [[var2]]<br />
+      E esta forma de variável? <span l:var="var1"></span><br />
+      Seria possível buscar por um atributo especial?<br />
+      O mesmo para estas: <span l:var="var2"></span><br />
+      <span l:var="ola"></span><br /><br />
+      Altera var1 de app:
+      <input id="texto1" l:bind="var1" type="text" /><br /><br />
+      Altera var2 de app:
+      <input id="texto2" l:bind="var2" type="text" /><br /><br />
+      Altera ola de app: <input id="texto3" l:bind="ola" type="text" />
     </div>
-    Esta não: [[var1]]<br>
-
+    <hr />
+    <div id="app2">
+      - Div app2: [[ola]]<br />
+      <span l:var="ola"></span>
+      <br /><br />
+      Altera ola de app2: <input id="texto4" l:bind="ola" type="text" />
+    </div>
+    <hr />
+    Estas não: [[var1]] [[var2]] [[ola]]
+    <br /><br /><br />
     <script>
-        // Adicione aqui o código que um usuário utilizaria para realizar as tarefas que pretende demonstrar!.
+      let app = new Leve("app", {
+        var1: "Variavel 1",
+        var2: "Variavel 2",
+        ola: "Olá app!",
+      });
+
+      let app2 = new Leve("app2", {
+        ola: "Olá app2!",
+      });
     </script>
-    Tirando dúvida da Cristina
-</body>
+  </body>
 </html>
