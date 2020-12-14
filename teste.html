@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste para Issue 5</title>
+    <script src="leve.js"></script>
+</head>
+
+<style>
+    #app,
+    #app2,
+    #app3 {
+      background: #11355c;
+      font-family: sans-serif;
+      font-weight: 600;
+      padding: 0 0 0 15px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+    input {
+      border-radius: 5px;
+      padding: 0 3px;
+    }
+  </style>
+<body>
+    
+
+
+    <div id="app1">
+        [[data]]
+    </div>
+
+    <div id="app2">
+        <input l:bind="var1" type="text" id="texto1">
+        <button onclick="changeText('texto1')">Enviar texto</button>
+    </div>
+
+    <div id="app3">
+        <input l:bind="var3" type="text" id="texto3">
+        <button onclick="changeText('texto3')">Enviar texto</button>
+    </div>
+
+
+
+    <script>
+        // Adicione aqui o código que um usuário utilizaria para realizar as tarefas que pretende demonstrar!.
+        let x = new Leve('app2', {var1: 'Michelle', data: 'Um teste'}, [{'attp': 'var1', 'idr': 'app1', 'attr': 'data'}]);
+        let y = new Leve('app1', {data: 'Default'});
+        let z = new Leve('app3', {var3: 'Moura', data: 'Um teste'}, [{'attp': 'var3', 'idr': 'app1', 'attr': 'data'}]);
+        let za = new Leve('app1', {data: 'Default'});
+        x.registrarNosObservados();
+        
+        // Prova de conceito sobre a atualização dinâmica da renderização
+        // Alterações assim renderizam mas não mudam
+        // preenchimento de inputs
+        function changeText(id){
+            let texto = document.getElementById(id).value
+            y.data = texto
+        }
+    </script>
+</body>
+</html>
