@@ -45,7 +45,20 @@
     </fieldset>
     </div>
     <hr />
-    Não Modificar: [[input_1]] [[input_2]] [[input_3]]
+    Não Modificar: [[input_1]] [[input_2]] [[input_3]]<br><br>
+    <div>
+      <h3>Issue #6</h3>
+      <div id="app6">
+
+      </div><br>
+      <div id="app8">
+    
+      </div>
+      
+      <div id="app7">
+          <input l:bind="var1" placeholder="Digite seu código html...." type="text" id="text">
+         
+      </div>
     <script>
         let app = new Leve("app", {
         input_1: "('-')",
@@ -58,6 +71,43 @@
         input_2: "valor2",
         input_3: "valor3",
       });
+
+      let app6 = new Leve("app6", {
+        input_1: "valor1",
+        input_2: "valor2",
+        input_3: "valor3",
+      });
+
+      let html = '<h1>Proposta para Issue #6</h1><h2>injetando tags html via codigo js</h2><h3>Isso pode ajudar muito no desenvolvimento front-end</h3>';
+      app6.setHTML("app6",html);
+      
+
+      //mudança do html na tela ao clicar o enter quando terminar de digitar o input
+      function MudancaSemClique(id1,id2,inputId){
+    let id_1 = document.getElementById(id1);
+    let id_2 = document.getElementById(id2);
+    
+    let primeiraVersaoDiv = id_1.textContent;
+    let texto;
+    for(let item of id_2.children){
+        if(item.id == inputId)
+       texto = item.id;
+      
+    }
+    
+    
+    id_1.innerHTML = document.getElementById(texto).value;
+    
+    }
+
+const inputOnPress = document.getElementById('text');
+inputOnPress.addEventListener('keyup', function(e){
+  var key = e.which || e.keyCode;
+  if (key == 13) { 
+  MudancaSemClique('app8','app7','text');
+  document.getElementById('text').value='';
+  }
+});
 
       window.setTimeout(() => {
         app.input_1 = "manhã";
