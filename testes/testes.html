@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -46,4 +46,64 @@
       });
     </script>
   </body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testes para o projeto Leve.js</title>
+
+    <script src="../leve.js"></script>
+</head>
+<body>
+    <h2>Exemplos que devem funcionar com o script adicionado no head deste html</h2>
+    <div id="app">
+        A variável ao lado deve ser substituída por outro valor: [[var1]]<br>
+        E eu tenho [[outra]], e mais [[outra]]<br>
+        E esta forma de variável? <span l:var="var1"></span> <br> Seria possível buscar por um atributo especial?
+        <hr>
+        Altere var1: <input l:bind="var1" type="text" id="texto1">
+        Altere outra: <input l:bind="outra" type="text" id="texto2">
+    </div>
+    <hr>
+    <div id="app2">
+        Recebe valor de var1 de app
+        [[oi]]
+        
+        <br>
+        <input l:bind="oi" type="text" id="texto3">
+    </div>
+    <br>
+    Esta não: [[var1]]<br>
+
+    <script>
+        let app = new Leve(
+          'app',
+          {
+            var1: 'Walmito',
+            outra: 'Um teste'
+          }
+        );
+        
+        let app2 = new Leve(
+          'app2',
+          {
+            oi: 'Olá, mundo!'
+          },
+          [
+            {
+              'attp': 'oi',
+              'idr': 'app',
+              'attr': 'var1'
+            }
+          ]
+        );
+        
+        app2.registerOnWatch();
+        
+
+    </script>
+</body>
 </html>

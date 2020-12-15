@@ -1,13 +1,25 @@
 class Leve {
   // Mantem o foco no elemnto utiizado
-  static focusOn = undefined; 
+  static focusOn = undefined;
+  
+  static leve_reg = {};
+
+  static register(el) {
+    Leve.leve_reg[el._id] = el;
+  }
+
+  static byId(id) {
+    return Leve.leve_reg[id];
+  }
 
   // Inicializa a instância do app
-  constructor(id, state = {}) {
+  constructor(id, state = {}, connections = []) {
     this._id = id;
     this._app = document.getElementById(this._id); // Salva elemento HTML referente ao app
     this._memento = this._app.innerHTML;  // Salva o estado original do app
     this._state = state;  // Inicializa o estado do app
+    this._connections = connections;
+    this._observers = [];
 
     // Percorre o mapa de variáveis do estado e vincula à instância atual
     for (const variable in this._state) {
@@ -23,6 +35,8 @@ class Leve {
         }
       });
     }
+
+    Leve.register(this);
 
     this.syncBinds();
     this.update();
@@ -64,6 +78,9 @@ class Leve {
   render() {
     // Salva o elemento em foco antes de renderizar as alterações
     Leve.focusOn = document.activeElement.id;
+
+    // Notifica primeiro os observadores para salvar as alterações antes de renderizar as alterações
+    this.notifyWatched();
     
     // Salva o estado dos elementos de input com atributo l:bind antes de renderizar as alterações
     let save = {};
@@ -71,7 +88,11 @@ class Leve {
 
     for (const child of this._app.children) {
       if (child.getAttribute('l:bind') != undefined) {
-        save[i] = child.value;
+        //*** Falha na alteração feita no timeout ao atualizar o valor da variável e não do input ***//
+        // save[i] = child.value;
+        
+        // Correção: salva o valor na variavél e não no value do input
+        save[i] = this[child.getAttribute('l:bind')];
         i++;
       }
     }
@@ -96,6 +117,7 @@ class Leve {
     if (Leve.focusOn != "") {
       document.getElementById(Leve.focusOn).focus();
     }
+
   }
 
   // Sincroniza o valor dos elementos de input com atributo l:bind à suas respectivas variáveis
@@ -109,6 +131,30 @@ class Leve {
           child = event.target;
           this[child.getAttribute("l:bind")] = child.value;
         });
+      }
+    }
+  }
+
+  // Registra todos os observadores
+  registerOnWatch() {
+    for(let connection of this._connections) {
+      let watch = Leve.byId(connection['idr']);
+      watch._observers.push(this);
+    }
+  }
+
+  // Notifica a mudança para chamar o método para realizar alteração
+  notifyWatched() {
+    for(let watch of this._observers) {
+      watch.updateWatched(this);
+    }
+  }
+  
+  // Altera o valor da variavel de destino de acordo com a de origem
+  updateWatched(watched) {
+    for(let connection of this._connections) {
+      if(connection['idr'] == watched._id) {
+        this[connection['attp']] = watched[connection['attr']];
       }
     }
   }
