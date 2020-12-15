@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Teste Leve.js</title>
+        <script src="leve.js"></script>
+
+    
+        <style>
+          #app,
+          #app2,
+          #app3,
+          #app6,
+          #app7,
+          #app8 {
+            background-image: url(https://www.mundojs.com.br/wp-content/uploads/2018/07/particulas-1024x473.png);
+            font-family: sans-serif;
+            font-weight: 600;
+            padding: 0 0 0 15px;
+            text-align: center;
+            color:aliceblue;
+            
+          }
+          input {
+            border-radius: 5px;
+            padding: 0 3px;
+          }
+        </style>
+  </head>
+
+    
+  <body>
+
+
+
+
+    <h2>
+      Exemplos que devem funcionar com o script adicionado no head deste html
+    </h2>
+    <div id="app">
+        <fieldset>
+      * Div app:<br />
+      [[input_3]]<br />
+      A variável ao lado deve ser substituída por outro valor: [[input_1]]<br />
+      Esta outra também: [[input_2]]<br />
+      E esta forma de variável? <span m:var="input_1"></span><br />
+      Seria possível buscar por um atributo especial?<br />
+      O mesmo para estas: <span m:var="input_2"></span><br />
+      <span m:var="input_3"></span><br /><br />
+      Modifica input_1 de app:
+      <input id="text1" m:bind="input_1" type="text" /><br /><br />
+      Modifica input_2 de app:
+      <input id="text2" m:bind="input_2" type="text" /><br /><br />
+      Modifica input_3 de app: <input id="text3" m:bind="input_3" type="text" />
+    </fieldset>
+    </div>
+   <br>
+    <div id="app3">
+        <fieldset>
+        * Div app3:<br />
+      [[input_1]]<br />
+      [[input_2]]<br />
+      [[input_3]]<br />
+      <br /><br />
+      Modifica input_1 de app3:
+      <input id="text5" m:bind="input_1" type="text" /><br /><br />
+      Modifica input_2 de app3:
+      <input id="text6" m:bind="input_2" type="text" /><br /><br />
+      Modifica input_3 de app3:
+      <input id="text7" m:bind="input_3" type="text" />
+    </fieldset>
+    </div>
+    <hr />
+    Não Modificar: [[input_1]] [[input_2]] [[input_3]]<br><br>
+    <div>
+      <h3>Issue #6</h3>
+      <div id="app6">
+
+      </div><br>
+      <div id="app8">
+
+      </div>
+
+      <div id="app7">
+          <input m:bind="var1" placeholder="Você pode digitar seu código html aqui:" type="text" id="text">
+
+      </div>
+    <script>
+        let app = new Leve("app", {
+        input_1: "Computação",
+        input_2: "JavaScript",
+        input_3: "Olá, mundo! Eu sou Michelle Moura",
+      });
+      
+      let app3 = new Leve("app3", {
+        input_1: "Eu estudo computação",
+        input_2: "Leios livros de ficção",
+        input_3: "Assistos palestras TEDs",
+      });
+
+      let app6 = new Leve("app6", {
+        input_1: "Michelle",
+        input_2: "Mércia",
+        input_3: "Prof. Felipe",
+      });
+
+      let html = '<h1>Uma possível proposta para a Issues #6</h1><h2>injetando tags html via codigo js</h2><h3>Isso pode ajudar muito no desenvolvimento front-end</h3>';
+      app6.setHTML("app6",html);
+
+
+      //mudança do html na tela ao clicar o enter quando terminar de digitar o input
+      function MudancaSemClique(id1,id2,inputId){
+    let id_1 = document.getElementById(id1);
+    let id_2 = document.getElementById(id2);
+
+    let primeiraVersaoDiv = id_1.textContent;
+    let texto;
+    for(let item of id_2.children){
+        if(item.id == inputId)
+       texto = item.id;
+
+    }
+
+
+    id_1.innerHTML = document.getElementById(texto).value;
+
+    }
+
+const inputOnPress = document.getElementById('text');
+inputOnPress.addEventListener('keyup', function(e){
+  var key = e.which || e.keyCode;
+  if (key == 13) { 
+  MudancaSemClique('app8','app7','text');
+  document.getElementById('text').value='';
+  }
+});
+window.setTimeout(() => {
+        app.input_1 = "manhã";
+        app.input_2 = "morning";
+        app2.input_3 = "Olá, Michelle. Bom dia!";
+      }, 3000);
+      window.setTimeout(() => {
+        app.input_1 = "tarde";
+        app.input_2 = "afternoon";
+        app2.input_3 = "Olá, Michelle. Boa tarde";
+      }, 2000);
+      window.setTimeout(() => {
+        app.input_1 = "Noite";
+        app.input_2 = "night";
+        app.input_3 = "Até logo!";
+        app2.input_3 = "Olá, Michelle. Boa noite!";
+      }, 1000);
+    </script>
+  </body>
+  </html>

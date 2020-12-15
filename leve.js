@@ -1,184 +1,108 @@
+// Classe que permitirá manipular o HTML.
 class Leve {
-    // Registro do Leve é estático
-    // Precisei criar para facilitar os eventListeners
-    // conseguirem alterar estados.
-    // focuson serve para manter o foco no input
-    // que está em uso pelo usuário.
-    static focuson = undefined;
-    static leve_reg = {};
-    
-    static register(el){
-        Leve.leve_reg[el._id] = el;
-    }
-    
-    static by_id(id){
-        return Leve.leve_reg[id];
-    }
-
-    // Métodos e propriedades de instância
-    // connections: [{'attp': 'nome', 'idr': 'app2', 'attr': 'oi'}]
-    constructor(id, dynamic_props={}, conections=[]){
-        this._id = id;
-        this._app = document.getElementById(id);
-        this._d_state = dynamic_props;  // Propriedades reativas
-        this._conns = conections;
-        this._obs = [];
-        
-        // Uma forma de vincular os atributos à instância
-        // de forma não reativa
-        //Object.assign(this, var_list);
-        
-        // Do jeito abaixo conseguimos usar algo
-        // parecido ao padrão Listener
-        // para reagir a atualizações nos valores
-        for(const n in this._d_state){
-            Object.defineProperty(this, `${n}`, {
-                set: function(value) { 
-                    this._d_state[`${n}`] = value;
-                    this.reset();
+    // O método construtor receberá o id que será manipulado e um objeto que contém um "mapa de variáveis".
+    constructor(id, objeto) {
+        this._element = document.getElementById(id);   // Armazena o elemento.
+        this._memento = this._element.innerHTML;       // Armazena o estado original do elemento para fins de restauração quando necessário.
+        this._variaveis = objeto;                       // Armazena o mapa de variáveis do objeto.
+        // Percorre os nomes das variáveis.
+        for (let varcollection of Object.keys(this._variaveis)) {
+            // Vincula cada variável à instância atual, permitindo obter (get), atualizar (set) e renderizar "this.atualizarElemento()" o seu valor ao ocorrerem mudanças nas variáveis.
+            Object.defineProperty(this, varcollection, {
+                get: () => {
+                    return this._variaveis[varcollection];
                 },
-                get: function() { 
-                    return this._d_state[`${n}`];
+                set: (value) => {
+                    if (value == '') {
+                        this._variaveis[varcollection] = 'Nenhum valor digitado';
+                        this.atualizarElemento();
+                    } else {
+                        this._variaveis[varcollection] = value;
+                        this.atualizarElemento();
+                    }
                 }
             });
         }
-        
-        
-        // Abaixo armazeno o estado original do app,
-        // para fins de restauração quando necessário atualizar a tela.
-        
-        this._memento = this._app.innerHTML;               
-        
-        this.put_binds();
-        
-        Leve.register(this);
-        
-        this.update();
+        this.sincronizarInputs();
+        this.atualizarElemento();
     }
-    
-    registrarNosObservados(){
-        for(let conf of this._conns){
-            let componente = Leve.by_id(conf['idr']);
-            componente.addObservador(this);
-        }
+    // Sincroniza o valor das variáveis do elemento com o conteúdo dos inputs de texto.
+    sincronizarInputs() {
+        let pai = this._element;
+        let filhos = pai.getElementsByTagName("input");
+        //utilizando o event
+        pai.addEventListener("input", (evento) => {
+            filhos = evento.target;
+            this[filhos.getAttribute("m:bind")] = filhos.value;
+        });
     }
-    
-    addObservador(observador){    
-        this._obs.push(observador);
-    }
-    
-    notifyObservadores(){
-        for(let obs of this._obs){
-            obs.update_obs(this);
-        }
-    }
-    
-    update_obs(vigiado){
-        for(let conf of this._conns){
-            if(conf['idr'] == vigiado._id){
-                this[conf['attp']] = vigiado[conf['attr']]
+    // Executa os métodos de renderização de variáveis, mantendo o foco no input de texto utilizado pelo usuário.
+    atualizarElemento() {
+        
+        // Isso deve ser feito para que o foco no input de texto seja restaurado mais tarde.
+        let focus = document.activeElement.id;
+        let pai = this._element;
+        let filhos = pai.getElementsByTagName("input");
+        
+        // Armazena o conteúdo dos inputs de texto num array, antes de renderizar a mudança numa variável.
+        // Isso deve feito para que o conteúdo digitado pelo usuário seja restaurado mais tarde.
+        let conteudoInputs = [];
+        for (let input of filhos) {
+            if (input.getAttribute("m:bind") != undefined) {
+                conteudoInputs.push(input.value);
             }
         }
-    }
-    
-    // Métodos para vínculos entre elementos
-    
-    put_binds(){
-        for(let el of this._app.children){
-            if(el.getAttribute('l:bind') != undefined){
-                el.setAttribute('value', this[el.getAttribute('l:bind')]);
-                
-                //console.log('Tentando adicionar o evento');
-                
-                this._app.addEventListener('input', function(evt){
-                    let el = evt.target;
-                    
-                    // Por enquanto estamos limitados
-                    // a campos na raiz do app.
-                    if(el.parentElement != null){
-                        const ep = Leve.by_id(el.parentElement.id);
-
-                        ep[el.getAttribute('l:bind')] = el.value;
-                        Leve.register(ep);
-                    }
-                });
-            }
-        }
-    }
-    
-    // Métodos para renderizar a tela
-    
-    update(){
-        this.update_by_marks();
-        this.update_by_attributes();
-    }
-    update_by_attributes(){
-        for(const el of this._app.children){
-            if(el.getAttribute('l:var') != undefined){
-                el.innerHTML = this[el.getAttribute('l:var')];
-            }
-        }
-    }
-    update_by_marks(){
-        let end = false;
-        while(end == false){
-            for(const k in this._d_state){
-                let pos0 = this._app.innerHTML.indexOf(`[[${k}]]`);
-                if(pos0 == -1) {
-                    end = true;
-                    continue;
-                } else {
-                    end = false;
-                }
-                let size = `[[${k}]]`.length;
-                
-                let final = this._app.innerHTML.slice(0,pos0)
-                    +this[k]+this._app.innerHTML.slice(pos0+size);
-                this._app.innerHTML = final;
-            }
-        }
-        
-    }
-    reset(){
-        // Quem possuia o foco do usuário antes do render?
-        Leve.focuson = document.activeElement.id;
-        
-        // Salvando estado dos inputs antes de renderizar.
-        let save = {};
+        // Restaura o estado original do elemento para que o método "substituirVariaveisMarcadas()" funcione corretamente.
+        this._element.innerHTML = this._memento;
+        // Métodos de renderização das variáveis.
+        this.substituirVariaveisMarcadas();
+        this.substituirVariaveisSpan();
+        // Restaura o conteúdo dos inputs de texto, a medida que a mudança numa variável é renderizada. Com isso, o conteúdo já digitado pelo usuário irá permanecer no input de texto enquanto ele está digitando.
         let i = 0;
-        for(const el of this._app.children){
-            if(el.getAttribute('l:bind') != undefined){
-                save[i] = el.value;
+        for (let input of filhos) {
+            if (input.getAttribute("m:bind") != undefined) {
+                input.value = conteudoInputs[i];
                 i++;
             }
         }
+        // Restaura o foco, a medida que a mudança numa variável esta sendo renderizada.
+        if (focus != '') {
+            document.getElementById(focus).focus();
+        }
+    }
+    // Substitui o conteudo antigo pelo atual.
+    substituirConteudo(conteudoatual) {
+        this._element.innerHTML = conteudoatual;
+    }
+    // Renderiza os valores das variáveis no lugar de variáveis marcadas com colchetes "[[variavel]]" que possuírem o mesmo nome da variável.
+    substituirVariaveisMarcadas() {
+        // Percorre os nomes das variáveis.
+        for (let varcollection of Object.keys(this._variaveis)) {
+            let conteudoAtualizado = this._element.innerHTML.replaceAll(`[[${varcollection}]]`, this[varcollection]);
+            this.substituirConteudo(conteudoAtualizado);
+        }
+    }
     
-        this._app.innerHTML = this._memento;
-        this.update();
-        
-        // Restaurando estado dos inputs
-        i = 0;
-        for(const el of this._app.children){
-            if(el.getAttribute('l:bind') != undefined){
-                el.value = save[i];
-                i++;
+    substituirVariaveisSpan() {
+        let pai = this._element;
+        let filhos = pai.getElementsByTagName("span");
+        // Percorre cada tag <span> "filha" de um elemento "pai".
+        for (let spans of filhos) {
+            // Percorre os nomes das variáveis.
+            for (let varcollection of Object.keys(this._variaveis)) {
+                // Se o valor do atributo "m:var" de uma tag <span> for igual ao nome de uma variável.
+                if (spans.getAttribute("m:var") == varcollection) {
+                    // O conteúdo daquela tag <span> é atualizado com valor daquela variável.
+                    spans.innerHTML = this[varcollection];
+                }
             }
         }
-        
-        // Restaurando o foco no elemento
-        if(Leve.focuson != '')
-            document.getElementById(Leve.focuson).focus();
-            
-        this.notifyObservadores();
-    }
-    
-    // Método para ações de timeout ou interval
-    run(obj){
-        console.log('Lista: ', this._obs)
-    }
-    
-}
 
-/*
-    {'var1': 'Reperquilson é o cara', 'var2': 1984}
-*/
+    }
+    //Issue #6
+    setHTML(id,textHTML){
+        let _id = document.getElementById(id);
+        _id.innerHTML = textHTML; 
+         }
+
+}
