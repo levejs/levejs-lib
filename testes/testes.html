@@ -1,49 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Testes para o projeto Leve.js</title>
-    <script src="../leve.js"></script>
-  </head>
-  <body>
-    <h2>
-      Exemplos que devem funcionar com o script adicionado no head deste html
-    </h2>
-    <div id="app">
-      - Div app: [[ola]]<br />
-      A variável ao lado deve ser substituída por outro valor: [[var1]]<br />
-      Esta outra também: [[var2]]<br />
-      E esta forma de variável? <span l:var="var1"></span><br />
-      Seria possível buscar por um atributo especial?<br />
-      O mesmo para estas: <span l:var="var2"></span><br />
-      <span l:var="ola"></span><br /><br />
-      Altera var1 de app:
-      <input id="texto1" l:bind="var1" type="text" /><br /><br />
-      Altera var2 de app:
-      <input id="texto2" l:bind="var2" type="text" /><br /><br />
-      Altera ola de app: <input id="texto3" l:bind="ola" type="text" />
-    </div>
-    <hr />
-    <div id="app2">
-      - Div app2: [[ola]]<br />
-      <span l:var="ola"></span>
-      <br /><br />
-      Altera ola de app2: <input id="texto4" l:bind="ola" type="text" />
-    </div>
-    <hr />
-    Estas não: [[var1]] [[var2]] [[ola]]
-    <br /><br /><br />
-    <script>
-      let app = new Leve("app", {
-        var1: "Qualquer coisa 1",
-        var2: "Qualquer coisa 2",
-        ola: "Olá mundo (app)!",
-      });
 
-      let app2 = new Leve("app2", {
-        ola: "Olá mundo (app2)!",
-      });
-    </script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Testes para o projeto Leve.js</title>
+
+  <script src="../leve.js"></script>
+</head>
+
+<body>
+  <h2>
+    Exemplos que devem funcionar com o script adicionado no head deste html
+  </h2>
+  <div id="app">
+    A variável ao lado deve ser substituída por outro valor: [[variavel1]]<br />
+    E eu tenho [[variavel2]], e mais [[variavel2]]<br />
+    E esta forma de variável? <span l:var="variavel1"></span> <br />
+    Seria possível buscar por um atributo especial?
+    <hr />
+    Altere variavel1: <input l:bind="variavel1" type="text" id="texto1" /> Altere variavel2:
+    <input l:bind="variavel2" type="text" id="texto2" />
+  </div>
+  <hr />
+  <div id="app2">
+    Recebe valor de variavel1 de app [[hi]]
+
+    <br />
+    <input l:bind="hi" type="text" id="texto3" />
+  </div>
+  <br />
+  Esta não: [[variavel1]]<br />
+
+  <div id="app3"></div><br />
+
+  <script>
+    let x = new Leve(
+      "app",
+      {
+        variavel1: "Qualquer coisa",
+        variavel2: "Qualquer coisa de novo"
+      }
+    );
+
+    let y = new Leve(
+      "app2",
+      {
+        hi: "Olá, mundo!"
+      },
+      [
+        {
+          attp: "hi",
+          idr: "app",
+          attr: "variavel1"
+        }
+      ]
+    );
+
+    y.registrarObs();
+
+    let z = new Leve(
+      "app3",
+      {
+        hi: "HTML injetado com sucesso!"
+      }
+    );
+
+    let html = '<h2>Injetando html</h2><h3>Html injetado e variaveis renderizadas</h3><br /><div id="app3">[[hi]]</div>';
+    z.injetarHTML(html);
+
+  </script>
+</body>
+
 </html>

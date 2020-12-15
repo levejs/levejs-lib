@@ -1,10 +1,21 @@
 class Leve {
     static foco = undefined;    //Serve para manter o foco no elemento que está sendo utilizado.
+    static leve_reg = {};
 
-    constructor(id, estado = {}) {  //Método Construtor inicializa a instância do app. 
+    static registro(elemento) {
+        Leve.leve_reg[elemento._id] = elemento;
+    }
+
+    static byId(id) {
+        return Leve.leve_reg[id];
+    }
+
+    constructor(id, estado = {}, conexao = []) {  //Método Construtor inicializa a instância do app. 
         this._id = id;
         this._app = document.getElementById(this._id);
         this._estado = estado;  //Armazena o mapa das variáveis.
+        this._conexao = conexao;
+        this._observadores = [];
 
         for (const variavel in this._estado) { //Percorre todas as variáveis e vincula à instância atual.
             Object.defineProperty(this, `${variavel}`, {
@@ -19,6 +30,7 @@ class Leve {
         }
 
         this._memento = this._app.innerHTML;   //Salva o estado inicial do app.
+        Leve.registro(this);
         this.sincronizarBinds();
         this.atualizarMarcacao();
         this.atualizarAtributo();
@@ -62,12 +74,13 @@ class Leve {
 
     renderizar() {  //Método usado para salvar o foco e o estado antes de renderizar as novas informações.
         Leve.foco = document.activeElement.id;  //Salva o foco para depois da renderização retornar o foco.
+        this.notificaObs();
         let salvar = {};
         let i = 0;
 
         for (const filho of this._app.children) {   //Salva o estado.
             if (filho.getAttribute('l:bind') != undefined) {
-                salvar[i] = filho.value;
+                salvar[i] = this[filho.getAttribute('l:bind')];
                 i++;
             }
         }
@@ -88,5 +101,35 @@ class Leve {
         if (Leve.foco != "") {  //Restaura o foco.
             document.getElementById(Leve.foco).focus();
         }
+    }
+
+    registrarObs() { // Registra os Obs.
+        for (let con of this._conexao) {
+            let obs = Leve.byId(con['idr']);
+            obs._observadores.push(this);
+        }
+    }
+
+    notificaObs() { //Notifica a mudança no Obs.
+        for (let obs of this._observadores) {
+            obs.atualizaObs(this);
+        }
+    }
+
+    atualizaObs(obs) {  //Atualiza o valor da variável do Obs.
+        for (let con of this._conexao) {
+            if (con['idr'] == obs._id) {
+                this[con['attp']] = obs[con['attr']];
+            }
+        }
+    }
+
+    injetarHTML(textHTML) {  //Método para injetar html no app
+        this._app = document.getElementById(this._id);
+        this._app.innerHTML = textHTML; // Injeta o html no app
+        this._memento = this._app.innerHTML;
+        this.sincronizarBinds();
+        this.atualizarMarcacao();
+        this.atualizarAtributo();
     }
 }
