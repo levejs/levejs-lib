@@ -1,9 +1,10 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Testes para o projeto Leve.js</title>
+
     <script src="../leve.js"></script>
   </head>
   <body>
@@ -11,99 +12,59 @@
       Exemplos que devem funcionar com o script adicionado no head deste html
     </h2>
     <div id="app">
-      - Div app: [[ola]]<br />
       A variável ao lado deve ser substituída por outro valor: [[var1]]<br />
-      Esta outra também: [[var2]]<br />
-      E esta forma de variável? <span l:var="var1"></span><br />
-      Seria possível buscar por um atributo especial?<br />
-      O mesmo para estas: <span l:var="var2"></span><br />
-      <span l:var="ola"></span><br /><br />
-      Altera var1 de app:
-      <input id="texto1" l:bind="var1" type="text" /><br /><br />
-      Altera var2 de app:
-      <input id="texto2" l:bind="var2" type="text" /><br /><br />
-      Altera ola de app: <input id="texto3" l:bind="ola" type="text" />
+      E eu tenho [[outra]], e mais [[outra]]<br />
+      E esta forma de variável? <span l:var="var1"></span> <br />
+      Seria possível buscar por um atributo especial?
+      <hr />
+      Altere var1: <input l:bind="var1" type="text" id="texto1" /> Altere outra:
+      <input l:bind="outra" type="text" id="texto2" />
     </div>
     <hr />
     <div id="app2">
-      - Div app2: [[ola]]<br />
-      <span l:var="ola"></span>
-      <br /><br />
-      Altera ola de app2: <input id="texto4" l:bind="ola" type="text" />
+      Recebe valor de var1 de app [[oi]]
+
+      <br />
+      <input l:bind="oi" type="text" id="texto3" />
     </div>
-    <hr />
-    Estas não: [[var1]] [[var2]] [[ola]]
-    <br /><br /><br />
+    <br />
+    Esta não: [[var1]]<br />
+
+    <div id="app3"></div><br />
+    <div id="app4">
+      <input l:bind="var1" placeholder="Digite seu código html...." type="text" id="text">
+    </div>
+
     <script>
       let app = new Leve("app", {
-        var1: "Variavel 1",
-        var2: "Variavel 2",
-        ola: "Olá mundo app!",
+        var1: "Walmito",
+        outra: "Um teste",
       });
 
-      let app2 = new Leve("app2", {
-        ola: "Olá mundo app2!",
+      let app2 = new Leve(
+        "app2",
+        {
+          oi: "Olá, mundo!",
+        },
+        [
+          {
+            attp: "oi",
+            idr: "app",
+            attr: "var1",
+          },
+        ]
+      );
+
+      app2.registerOnWatch();
+
+      let app3 = new Leve("app3", {
+        var1: "variavel 1 app3",
+        var2: "variavel 2 app3"
       });
+
+      let html = '<h2>Injetando html</h2><h3>Html injetado e variaveis renderizadas</h3><br /><div id="app3">[[var1]]<br />[[var2]]</div>';
+      app3.injectHTML(html);
+
     </script>
   </body>
-</html> -->
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Testes para o projeto Leve.js</title>
-
-    <script src="../leve.js"></script>
-</head>
-<body>
-    <h2>Exemplos que devem funcionar com o script adicionado no head deste html</h2>
-    <div id="app">
-        A variável ao lado deve ser substituída por outro valor: [[var1]]<br>
-        E eu tenho [[outra]], e mais [[outra]]<br>
-        E esta forma de variável? <span l:var="var1"></span> <br> Seria possível buscar por um atributo especial?
-        <hr>
-        Altere var1: <input l:bind="var1" type="text" id="texto1">
-        Altere outra: <input l:bind="outra" type="text" id="texto2">
-    </div>
-    <hr>
-    <div id="app2">
-        Recebe valor de var1 de app
-        [[oi]]
-        
-        <br>
-        <input l:bind="oi" type="text" id="texto3">
-    </div>
-    <br>
-    Esta não: [[var1]]<br>
-
-    <script>
-        let app = new Leve(
-          'app',
-          {
-            var1: 'Walmito',
-            outra: 'Um teste'
-          }
-        );
-        
-        let app2 = new Leve(
-          'app2',
-          {
-            oi: 'Olá, mundo!'
-          },
-          [
-            {
-              'attp': 'oi',
-              'idr': 'app',
-              'attr': 'var1'
-            }
-          ]
-        );
-        
-        app2.registerOnWatch();
-        
-
-    </script>
-</body>
 </html>

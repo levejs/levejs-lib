@@ -159,4 +159,13 @@ class Leve {
     }
   }
 
+  // Método para injetar html no app
+  injectHTML(textHTML) {
+    this._app = document.getElementById(this._id);
+    this._app.innerHTML = textHTML; // Injeta o html no app
+    this._memento = this._app.innerHTML; // Salva o estado original desse html
+    this.syncBinds(); // Sincroniza os binds
+    this.update(); // Renderiza as variaveis
+  }
+
 }
