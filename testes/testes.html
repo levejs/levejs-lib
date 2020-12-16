@@ -1,23 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Testes para o projeto Leve.js</title>
 
-    <script src="caminho para sua proposta de script com as classes"></script>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Teste Leve.js</title>
+    <script src="./propostas.js"></script>
 </head>
+
 <body>
     <h2>Exemplos que devem funcionar com o script adicionado no head deste html</h2>
     <div id="app">
         A variável ao lado deve ser substituída por outro valor: [[var1]]<br>
-
+        E eu tenho [[outra]], e mais [[outra]]<br>
         E esta forma de variável? <span l:var="var1"></span> <br> Seria possível buscar por um atributo especial?
+        <hr>
+        Altere var1: <input l:bind="var1" type="text" id="texto1">
+        Altere outra: <input l:bind="outra" type="text" id="texto2">
     </div>
+    <hr>
+    <div id="app2">
+        [[oi]]
+
+        <br>
+        <input l:bind="oi" type="text" id="texto3">
+    </div>
+    <br>
     Esta não: [[var1]]<br>
 
-    <script>
-        // Adicione aqui o código que um usuário utilizaria para realizar as tarefas que pretende demonstrar!.
-    </script>
+    <div>
+        <h3>Issue #6</h3>
+        <div id="app6">
+
+        </div><br>
+        <div id="app8">
+
+        </div>
+
+        <div id="app7">
+            <input l:bind="var1" placeholder="Digite seu código html...." type="text" id="text">
+
+        </div>
+        <script>
+
+            let x = new Leve('app', {var1: 'João', outra: 'Apenas um teste'}, [{'attp': 'var1', 'idr': 'app2', 'attr': 'oi'}]);
+            let y = new Leve('app2', {oi: 'Olá, mundo!'});
+            x.atualizarObservador();
+
+            let app6 = new Leve("app6", {
+                input_1: "valor1",
+                input_2: "valor2",
+                input_3: "valor3",
+            });
+
+            let html = '<h1>Proposta para Issue #6</h1><h2>injetando tags html via codigo js</h2><h3>Isso pode ajudar muito no desenvolvimento front-end</h3>';
+            app6.setHTML("app6", html);
+
+
+            //mudança do html na tela ao clicar o enter quando terminar de digitar o input
+            function MudancaSemClique(id1, id2, inputId) {
+                let id_1 = document.getElementById(id1);
+                let id_2 = document.getElementById(id2);
+
+                let primeiraVersaoDiv = id_1.textContent;
+                let texto;
+                for (let item of id_2.children) {
+                    if (item.id == inputId)
+                        texto = item.id;
+                }
+
+
+                id_1.innerHTML = document.getElementById(texto).value;
+
+            }
+
+            const inputOnPress = document.getElementById('text');
+            inputOnPress.addEventListener('keyup', function (e) {
+                var key = e.which || e.keyCode;
+                if (key == 13) {
+                    MudancaSemClique('app8', 'app7', 'text');
+                    document.getElementById('text').value = '';
+                }
+            });
+
+            window.setTimeout(() => {
+                app.input_1 = "manhã";
+                app.input_2 = "tarde";
+                app2.input_3 = "noite";
+            }, 3000);
+            window.setTimeout(() => {
+                app.input_1 = "noite";
+                app.input_2 = "tarde";
+                app2.input_3 = "manhã";
+            }, 2000);
+            window.setTimeout(() => {
+                app.input_1 = "tarde";
+                app.input_2 = "noite";
+                app.input_3 = "manhã";
+                app2.input_3 = "Olá, Fique Leve!";
+            }, 1000);
+        </script>
 </body>
+
 </html>
