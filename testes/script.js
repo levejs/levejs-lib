@@ -3,11 +3,28 @@ class App {
 
 	run() {
 		let obj = new Leve('app');
-    obj.armazenar('texto4');
-   	obj.comunicacaoComponentes("app2");
+   
     //obj.onclick(console.log("qq"));
-		//obj.armazenar('app5');
-		//obj.mudarEmTempo();
+		//obj.mudarEmTempo("");
+    //issue 1
+    //obj.mudarId("app1","df");
+    
+    //issue 2
+   // obj.mudarVariavel("app1","1","Mudança");
+    
+    //issue 3
+   	//obj.armazenar('app5');
+
+    //issue 4
+   // obj.armazenar('app7');
+
+    //obj.mudarEmTempo("app2","Teste");
+    //issue 5
+    obj.armazenar('app7');
+   	obj.comunicacaoComponentes("app2");
+    
+
+    
 	}
 }
 
@@ -28,6 +45,7 @@ class Leve {
 	mudarVariavel(id, variavel, mudanca) {
 		let str = document.getElementById(id).innerHTML;
 		let res = str.replace(variavel, mudanca);
+    console.log(res);
 		document.getElementById(id).innerHTML = res;
 	}
 
@@ -51,7 +69,7 @@ class Leve {
 
 	//#issue4
 
-	mudarEmTempo(id){  
+	mudarEmTempo(id,va){  
 		let v=[];
  		let max=this.obs.length;
 		v=this.obs;
@@ -61,7 +79,15 @@ class Leve {
 				for(let e of document.getElementById(id).children){
 					if(e.getAttribute('l:bind') != undefined){
 						for(let i=0;i<max;i++){
-						v[i].innerHTML=e.value;
+            let str=	v[i].innerHTML;
+            if(e.value==""){
+           		break;
+						}
+            let rts= str.replace(va,e.value);
+           
+          	v[i].innerHTML=rts;
+            va=e.value;
+           
 						}
 					}
 				}
@@ -73,19 +99,21 @@ class Leve {
    
    comunicacaoComponentes(id){
    		let v=[];
+      let max=this.obs.length;
+
 			v=this.obs;
 			setInterval((
 				function r(){
 					for(let e of document.getElementById(id).children){
 						if(e.getAttribute('l:bind') != undefined){
   						document.getElementById("let").addEventListener("click", function() {	
-	 							for(let i=0;i<1;i++){
-  								v[i].placeholder = e.value;
+	 							for(let i=0;i<max;i++){
+  								v[i].innerHTML = e.value;
   							}
   					}); 
 					}
 			}
-   }),1000);    
+   }),100);    
 	}
 }   
     
