@@ -1,27 +1,82 @@
-<body>
-    <h2>Exemplos que devem funcionar com o script adicionado no head deste html</h2>
-    <div id="app">
-        A variável ao lado deve ser substituída por outro valor: [[var1]]<br>
+<!DOCTYPE html>
+<html lang="en">
 
-        E esta forma de variável? <span l:var="var1"></span> <br> Seria possível buscar por um atributo especial?
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Testes para o projeto Leve.js</title>
+
+  <script src="../js/script.js"></script>
+</head>
+
+<body>
+  <h2>Exemplos que devem funcionar com o script adicionado no head deste html</h2>
+  <div id="app">
+    A variável ao lado deve ser substituída por outro valor: [[var1]]<br>
+    E eu tenho [[outra]], e mais [[outra]]<br>
+    E esta forma de variável? <span l:var="var1"></span> <br> Seria possível buscar por um atributo especial?
+    <hr>
+    Altere var1: <input l:bind="var1" type="text" id="text1">
+    Altere outra: <input l:bind="outra" type="text" id="text2">
+  </div>
+  <hr>
+  <div id="app2">
+    [[oi]]
+
+    <br>
+    <input l:bind="oi" type="text" id="text3">
+  </div>
+  <br>
+  Esta não: [[var1]]
+
+  <div>
+    <div id="app3"></div>
+
+    <div id="app5"></div>
+
+    <div id="app4">
+      <span>Digite um código HTML</span>
+      <input type="text" id="text">
     </div>
 
-    Esta não: [[var1]]<br>
-
     <script>
-        let id = "app";
-        let initialContent = "[[var1]]";
-        let newContent = "Hello World!";
+      let app = new Leve('app', { var1: 'Karol', outra: 'Apenas um teste' }, [{ 'attp': 'var1', 'idr': 'app2', 'attr': 'oi' }]);
+      let app2 = new Leve('app2', { oi: 'Olá, mundo!' });
+      app.observedElements();
 
-        let attributeValue = "var1";
-        let data = {
-          var1: "Sim, é possível usando a lib Mustache.js."
+      let app3 = new Leve("app3", {
+        input_1: "valor1", input_2: "valor2", input_3: "valor3",
+      });
+
+      let html = '<h3>Injetar HTML</h3>';
+      app3.injectHTML("app3", html);
+
+      //HTML adicionado na página ao clicar enter
+      function update(id1, id2, inputId) {
+        let _id1 = document.getElementById(id1);
+        let _id2 = document.getElementById(id2);
+
+        let text;
+        for (let el of _id2.children) {
+          if (el.id == inputId)
+            text = el.id;
         }
+        _id1.innerHTML = document.getElementById(text).value;
+      }
 
-        let manipulaHTML = new ManipulaHTML();
-        manipulaHTML.getElement(id);
-        manipulaHTML.replaceElement(id, initialContent, newContent);
-        manipulaHTML.changeTagSpan(id, data, attributeValue, data.var1);
+      // Este evento será disparado quando uma tecla for pressionada.
+      const input = document.getElementById('text');
+      input.addEventListener('keyup', function (event) {
+        let key = event.which || event.keyCode;
+        if (key == 13) {
+          update('app5', 'app4', 'text');
+          document.getElementById('text').value = '';
+        }
+      });
+
+      window.setTimeout(function () { app.var1 = "Ana Karolina"; }, 3000);
     </script>
+
 </body>
+
 </html>
