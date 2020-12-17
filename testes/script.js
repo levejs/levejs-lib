@@ -32,4 +32,12 @@ class Leve{
         this.#element.innerText = this.#states.shift();
         this.#var1 = this.#statesVar1.shift();
     }
+
+    //issue #4
+}
+
+//issue #5
+function send(id1, id2){
+    document.querySelector(id2).innerText = 
+    document.querySelector(id1).children.texto1.value;
 }

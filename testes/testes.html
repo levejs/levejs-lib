@@ -15,12 +15,21 @@
         E esta forma de variável? <span l:var="var1"></span> <br> Seria possível buscar por um atributo especial?
     </div>
     Esta não: [[var1]]<br>
+    <div id="app1">
+        [[dado_externo_a_app1]]
+    </div>
+
+    <div id="app2">
+        <input l:bind="var1" type="text" id="texto1">
+        <button onclick="send('#app2', '#app1')">Enviar para app 1</button>
+    </div>
+</body>
 
     <script>
         let app = new Leve('#app');
         app.subs('Felipe');
-        apps.subs('Harlen');
-        apps.undo();
+        app.subs('Harlen');
+        app.undo();
     </script>
 </body>
 </html>
