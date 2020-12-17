@@ -34,10 +34,20 @@ class Leve{
     }
 
     //issue #4
+    
+    //issue #6
+    insert(str){
+        this.#states.unshift(this.#element.innerText);
+        this.#statesVar1.unshift(this.#var1);
+        this.#element.innerHTML += 
+            "<br>" 
+            + "<p>" + str + "</p>"
+    }
+
 }
 
 //issue #5
 function send(id1, id2){
     document.querySelector(id2).innerText = 
-    document.querySelector(id1).children.texto1.value;
+        document.querySelector(id1).children.texto1.value;
 }
