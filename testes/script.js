@@ -14,8 +14,9 @@ class Leve{
     
     // issue #1
     subs(str){
-        this.#states.unshift(this.#element.innerText);
-        this.#statesVar1.unshift(this.#var1);
+        this.save();
+        //this.#states.unshift(this.#element.innerText);
+        //this.#statesVar1.unshift(this.#var1);
         this.#element.innerText = this.#element.innerText.replaceAll(this.#var1, str);
         this.#var1 = str;
     }
@@ -33,21 +34,26 @@ class Leve{
         this.#var1 = this.#statesVar1.shift();
     }
 
-    //issue #4
-    
-    //issue #6
-    insert(str){
+    save(){
         this.#states.unshift(this.#element.innerText);
         this.#statesVar1.unshift(this.#var1);
-        this.#element.innerHTML += 
-            "<br>" 
-            + "<p>" + str + "</p>"
     }
 
-}
+    //issue #4
 
-//issue #5
-function send(id1, id2){
-    document.querySelector(id2).innerText = 
-        document.querySelector(id1).children.texto1.value;
+    //issue #5
+    static send(id1, id2){
+        this.save();
+        //this.#states.unshift(this.#element.innerText);
+        //this.#statesVar1.unshift(this.#var1);
+        document.querySelector(id2).innerText = 
+            document.querySelector(id1).children.texto1.value;
+    }
+    //issue #6
+    insert(new_html){
+        this.save();
+        //this.#states.unshift(this.#element.innerText);
+        //this.#statesVar1.unshift(this.#var1);
+        this.#element.innerHTML += '<br>' + new_html;
+    }
 }
