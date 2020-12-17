@@ -16,13 +16,13 @@ class App {
    	//obj.armazenar('app5');
 
     //issue 4
-   // obj.armazenar('app7');
+   // obj.armazenar('app3');
 
-    //obj.mudarEmTempo("app2","Teste");
+   // obj.mudarEmTempo("app2","Teste");
     //issue 5
-    obj.armazenar('app7');
-   	obj.comunicacaoComponentes("app2");
-    
+   // obj.armazenar('app7');
+   //	obj.comunicacaoComponentes("app2");
+    obj.injetarHTML("app2","app3");
 
     
 	}
@@ -115,6 +115,27 @@ class Leve {
 			}
    }),100);    
 	}
+  
+  //#issue6
+  
+  injetarHTML(id1,id2){
+ 
+     
+		setInterval((
+			function tss(){
+						for(let e of document.getElementById(id1).children){
+						if(e.getAttribute('l:bind') != undefined){
+  						document.getElementById("let").addEventListener("click", function() {	
+	 						if(e.value==''){
+           		
+						}
+              document.getElementById(id2).innerHTML=e.value;
+  							
+  					}); 
+					}
+			}
+   }),100);  
+  }
 }   
     
 window . onload  =  function ( )  {
