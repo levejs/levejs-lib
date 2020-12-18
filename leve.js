@@ -1,22 +1,78 @@
-class Leve {
-    constructor(id, var_List){
-        this._app = document.getElementById(id);
-        this._vars = var_list;
 
-        window.setInterval(this.run, 1000, this);
+class Local{
+    lit<Voltar> lista = new ArrayList <Voltar>();
+
+    add(Local estado){
+        lista.add(estado);
 }
-    run(obj){
+    Voltar get(posicao){
+        lista.get(posicao);
+    }
+    
+    class Voltar{
+         let estado;
 
-        for(const k in obj._vars){
+    Voltar(estado){
+             this.estado = estado;
+    }
 
 
-            let pos0 = obj._app.innerHTML.indexOf('[[${k}]]');
-            if(pos0 == -1) continue;
-            let size = '[[${k}]]'.length
+    getEstado(){
+        estado;
+    }
 
-            let final = obj._app.innerHTML.slice(0,pos0)
-                    +obj.vars[k]+obj._app.innerHTML.slice(pos0+size);
-                obj._app.innerHTML = final;
-          }
-       }
+
+        class origem{
+            let string estado;
+    
+         setEstado(String salvarEstado){
+             this.estado = salvarEstado;
+        }
+   
+
+         getEstado(){
+            return this.estado;
+    }
+
+
+    salvarEstado(){
+        return new ve(estado);
+    }
+
+
+        estadoSalvo(ve ultimoEstado){                       
+            estado = ultmoEstado.getEstado();
+    }
+
+
+
+class Leve{
+    Origem origem = new Origem();
+    Local local = new Local();
+
+    origem.setEstado("Estado inicial");
+    local.add(origem.salvarEstado());
+
+    origem.setEstado("Proximo estado");
+    local.add(origem.salvarEstado());
+
+    origem.setEstado("Estado atual");
+    window.print("Estado atual");
+    console.log(origem.getEstado());
+
+    origem.getEstadoSalvo(local.get(0));
+    window.print("Estado incial");
+    console.log(origem.getEstado());
+    
+    origem.getEstadoSalvo(local.get(1));
+    window.print("proximo estado");
+    console.log(origem.getEstado());
+
 }
+
+
+
+
+
+}
+    
