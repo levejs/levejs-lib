@@ -1,145 +1,157 @@
-class App {
-	constructor() {}
-
-	run() {
-		let obj = new Leve('app');
-   
-    //obj.onclick(console.log("qq"));
-		//obj.mudarEmTempo("");
-    //issue 1
-    //obj.mudarId("app1","df");
+class App{
+	constructor(){}
+	run(){
+		let obj= new leve();
+ 
     
-    //issue 2
-   // obj.mudarVariavel("app1","1","Mudança");
-    
-    //issue 3
-   	//obj.armazenar('app5');
-
-    //issue 4
-   // obj.armazenar('app3');
-
-   // obj.mudarEmTempo("app2","Teste");
-    //issue 5
-   // obj.armazenar('app7');
-   //	obj.comunicacaoComponentes("app2");
-    obj.injetarHTML("app2","app3");
-
-    
+		//issue #1
+		//obj._id="app1";
+		//obj.mudarId("df");
+		//issue #2
+		//obj._id="app1";
+		//obj.mudarVariavel("1","Mudança");
+		//issue #3
+		//obj._id="app5";
+		//obj.armazenar();
+		//issue #4
+		//obj._id="app2";
+		//obj.addObservador("app10");
+		// obj.addObservador("app3");
+		// obj.mudarEmTempo("var2");
+		//issue #5
+		//obj._id="app2";
+		// obj.addObservador('app10');
+		//obj.addObservador('app9');
+		//obj.comunicacaoComponentes();
+		//issue #6
+		//obj._id="app2";
+		//obj.addObservador('app3');
+		//obj.injetarHTML();
+		//obj.testeTestando();
 	}
 }
 
 
-class Leve {
-
+class leve{
 	constructor(){
-		this.obs = [];
+		this.obs=[];// Armazena os observadores
+		this.armazem=[];//Armazena o estado dos objetos
+		this._id;//O Id do do objeto em destaque
 	}
-
-	
-	//#issue 1
-	mudarId(id, mudanca) {
-		document.getElementById(id).innerHTML = mudanca;
+  
+	//Issue 1# como parâmetro  a mudança a ser realizada
+	mudarId( mudanca) {
+		document.getElementById(this.noticaId()).innerHTML = mudanca;
 	}
-
-	//#issue 2
-	mudarVariavel(id, variavel, mudanca) {
-		let str = document.getElementById(id).innerHTML;
+  
+	//Issue 2# Recebendo como parâmetro a variavel a ser modificada e a mudança a ser realizada
+	mudarVariavel( variavel, mudanca) {
+		let str = document.getElementById(this.noticaId()).innerHTML;
 		let res = str.replace(variavel, mudanca);
-    console.log(res);
-		document.getElementById(id).innerHTML = res;
+		document.getElementById(this.noticaId()).innerHTML = res;
 	}
-
-
-	//#issue 3
-	armazenar(id){
-	let i=0;
+  
+	//Issue 3# percorre o vetor armazem e armazena o objeto requerido quando encontra um espaço vazio
+	armazenar(){
+		let i=0;
 		let b=false;
-    
 		while(b==false){
-			if(this.obs[i]==undefined){
-				this.obs[i]= document.getElementById(id);
+			if(this.armazem[i]==undefined){
+				this.armazem[i]= document.getElementById(this.noticaId());
 				b=true;
 			}
-		i++;
+			i++;
 		}
-   
-			
 	}
-
-
-	//#issue4
-
-	mudarEmTempo(id,va){  
-		let v=[];
- 		let max=this.obs.length;
-		v=this.obs;
-     
-		setInterval((
+	
+	//Issue 4# Recebe o  a mudança requerida
+	mudarEmTempo(va){  
+		let v=[];//vetor auxiliar
+		let max=this.obs.length;//obtem o tamanho atual do vetor obs
+		v=this.obs;// atribui o vetor obs ao vetor auxiliar v
+		 setInterval((//Intervalo com um tempo de 100 para continuar chamando a função tss 
 			function tss(){
-				for(let e of document.getElementById(id).children){
-					if(e.getAttribute('l:bind') != undefined){
-						for(let i=0;i<max;i++){
-            let str=	v[i].innerHTML;
-            if(e.value==""){
-           		break;
+				for(let e of document.getElementById(this.noticaId()).children){//Percorre os elementos filhos do elemento que teve seu id informado
+					if(e.getAttribute('l:bind') != undefined){//Se há um input com l:bind entra no if
+						if(e.value==""){//se o input estiver vazio as variaveis não são substituidas
+							break;
 						}
-            let rts= str.replace(va,e.value);
-           
-          	v[i].innerHTML=rts;
-            va=e.value;
-           
+						for(let i=0;i<max; i++){//percorre o vetor auxiliar v realizando as modificações
+							let str=	v[i].innerHTML;
+							let rts= str.replace(va,e.value);
+							v[i].innerHTML=rts;
+							if(i==max-1){
+								va=e.value;  
+							}
 						}
 					}
 				}
-			}),100);
-		}
-    
-    
-   //#issue5
-   
-   comunicacaoComponentes(id){
-   		let v=[];
-      let max=this.obs.length;
-
-			v=this.obs;
-			setInterval((
-				function r(){
-					for(let e of document.getElementById(id).children){
-						if(e.getAttribute('l:bind') != undefined){
-  						document.getElementById("let").addEventListener("click", function() {	
-	 							for(let i=0;i<max;i++){
-  								v[i].innerHTML = e.value;
-  							}
-  					}); 
-					}
 			}
-   }),100);    
+		),100);
 	}
-  
-  //#issue6
-  
-  injetarHTML(id1,id2){
- 
-     
+	
+	//Issue 5# recebe o id do elemento observado
+	comunicacaoComponentes(){
+		let v=[];
+		let max=this.obs.length;
+		v=this.obs;
+		setInterval((
+			function r(){
+				for(let e of document.getElementById(this.noticaId()).children){
+					if(e.getAttribute('l:bind') != undefined){
+						document.getElementById("let").addEventListener("click", function() {//adiciona um evento ao click do botão com id let	
+							for(let i=0;i<max;i++){
+								v[i].innerHTML = e.value;//modifica substitui o conteudo html pelo valor do input
+							}
+						}); 
+					}
+				}
+			}
+		),100);    
+	}
+	
+	//Issue 6# recebe o id do eemento observado e  
+	injetarHTML(){
+		let v=[];
+		let max=this.obs.length;
+		v=this.obs;
 		setInterval((
 			function tss(){
-						for(let e of document.getElementById(id1).children){
-						if(e.getAttribute('l:bind') != undefined){
-  						document.getElementById("let").addEventListener("click", function() {	
-	 						if(e.value==''){
-           		
-						}
-              document.getElementById(id2).innerHTML=e.value;
-  							
-  					}); 
+				for(let e of document.getElementById(this.noticaId()).children){
+					if(e.getAttribute('l:bind') != undefined){
+						document.getElementById("let").addEventListener("click", function() {	
+							for(let i=0;i<max;i++){
+								v[i].innerHTML=e.value;
+							}
+						}); 
 					}
+				}
 			}
-   }),100);  
-  }
-}   
-    
-window . onload  =  function ( )  {
-	app  =  new  App ( ) ;
-	app . run ( ) ;
+		),100);  
+	}
+	
+	//Adiciona observador ao vetor obs
+	addObservador(){
+		(this.obs).push(document.getElementById(this.noticaId()));
+	}
+	
+	//remove observador de acordo com o id passado
+	removeObservador(){
+		let aux1;
+		aux1= this.obs.indexOf(this.noticaId());
+		this.obs.splice(aux1,1);
+	}
+	  
+	noticaId(){
+		return this._id;
+	}
+	
+	testeTestando(){
+		console.log(this.noticaObservador());
+	}
 }
 
+window.onload= function(){
+	app=new App();
+	app.run();
+}	
