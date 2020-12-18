@@ -13,18 +13,20 @@
         E esta forma de variável? <span l:var="var1"></span> <br> Seria possível buscar por um atributo especial?
     </div>
     Esta não: [[var1]]<br>
-
-    <div id="app1">
+    -------------------------------------------------------------------------------------------------------------------------------------------------
+    <br />
+    <br />
+    App1: <div id="app1">
         [[dado_externo_a_app1]]
     </div>
-
-    <div id="app2">
+    <br /> 
+    App 2: <div id="app2">
         <input l:bind="var1" type="text" id="texto1">
         <button onclick="Leve.send('#app2', '#app1')">Enviar para app 1</button>
     </div>
-    </br>
+    <br />
+    -------------------------------------------------------------------------------------------------------------------------------------------------
     <div id="app3">
-        - Div app3:<br />
         <br />
         <span data-html="input_1">[[input_1]]</span>
         <br />
@@ -44,7 +46,7 @@
         <br />
     </div>
 
-    <div id="app4"></div>
+    <div id="app6"></div>
     <script src="script.js"></script>
 </body>
     <script>
@@ -53,15 +55,16 @@
         app1.subs('Harlen');
         app1.undo();
 
-        let app2 = new Leve('#app3');
-        app2.reflect(
+        let app4 = new Leve('#app3');
+        app4.reflect(
             {
                 input_1: 'Hello World',
                 input_2: 'Olá Mundo',
-                input_3: 'Vòila'
+                input_3: 'Voilà'
             }   
         );
-        //Leve.send('#app');
+        let app6 = new Leve('#app6');
+        app6.insert('<p> Demonstração da issue #6 :)<p>');
     </script>
 </body>
 </html>

@@ -77,28 +77,28 @@ class Leve{
         })
 
         Object.keys(model).forEach(function (key) {
-            let _value = model[key]
+            let value = model[key]
             Object.defineProperty(model, key, {
                 get: function () {
-                    return _value;
+                    return value;
                 },
-                set: function (value) {
-                    _value = value
+                set: function (new_value) {
+                    value = new_value
                     if (values[key]) {
                         let inputs = values[key]
                         inputs.forEach(function (input) {
-                            input.value = _value
+                            input.value = value
                         })
                     }
                     if (htmls[key]) {
                         let spans = htmls[key]
                         spans.forEach(function (span) {
-                            span.textContent = _value
+                            span.textContent = value
                         })
                     }
                 }
             })
-            model[key] = _value
+            model[key] = value
         })
     }
 
