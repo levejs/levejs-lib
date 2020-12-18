@@ -48,10 +48,14 @@
     <script src="script.js"></script>
 </body>
     <script>
-        let app = new Leve('#app');
-        app.subs('Felipe');
-        app.subs('Harlen');
-        app.undo();
+        let app1 = new Leve('#app');
+        app1.subs('Felipe');
+        app1.subs('Harlen');
+        app1.undo();
+
+        let app2 = new Leve('#app3');
+        app2.reflect();
+        //Leve.send('#app');
     </script>
 </body>
 </html>
