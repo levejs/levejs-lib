@@ -40,7 +40,11 @@ class Leve{
     }
 
     //issue #4
-    //Fonte: https://pt.stackoverflow.com/questions/297795/como-%C3%A9-o-processo-do-two-way-data-binding-com-js-puro
+    /*
+        Fontes: 
+        https://pt.stackoverflow.com/questions/297795/como-%C3%A9-o-processo-do-two-way-data-binding-com-js-puro
+        https://medium.com/criciumadev/two-way-data-binding-fd5d71712d28
+    */
     reflect(model){
         this.save();
    
@@ -71,7 +75,7 @@ class Leve{
                 input.addEventListener("input", onValueInput.bind({ key, input }))
             })
         })
-        
+
         Object.keys(model).forEach(function (key) {
             let _value = model[key]
             Object.defineProperty(model, key, {
