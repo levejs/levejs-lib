@@ -6,7 +6,7 @@ class Leve{
     #span;
     constructor(id){
         this.#element = document.querySelector(id);
-        this.#span = this.#element.querySelector('span')
+        this.#span = this.#element.querySelector('span');
         this.#var1 = '[[var1]]'
         this.#statesVar1 = [];
         this.#states = [];
@@ -48,57 +48,60 @@ class Leve{
     reflect(model){
         this.save();
    
-        let values = document.querySelectorAll("[data-value]")
-        let htmls = document.querySelectorAll("[data-html]")
+        let values = document.querySelectorAll("[data-value]");
+        let htmls = document.querySelectorAll("[data-html]");
 
         values = [].reduce.call(values, function (values, value) {
             if (!values[value.dataset.value])
-            values[value.dataset.value] = [];
-            values[value.dataset.value].push(value)
-            return values
-        }, {})
+                values[value.dataset.value] = [];
+            values[value.dataset.value].push(value);
+
+            return values;
+        }, {});
 
         htmls = [].reduce.call(htmls, function (htmls, html) {
             if (!htmls[html.dataset.html])
-            htmls[html.dataset.html] = [];
-            htmls[html.dataset.html].push(html)
-            return htmls
-        }, {})  
+                htmls[html.dataset.html] = [];
+            htmls[html.dataset.html].push(html);
+            
+            return htmls;
+        }, {});  
 
         let onValueInput = function (e) {
-            model[this.key] = this.input.value
+            model[this.key] = this.input.value;
         }
 
         Object.keys(values).forEach(function (key) {
-            var inputs = values[key]
+            var inputs = values[key];
             inputs.forEach(function (input) {
-                input.addEventListener("input", onValueInput.bind({ key, input }))
-            })
-        })
+                input.addEventListener("input", onValueInput.bind({ key, input }));
+            });
+        });
 
         Object.keys(model).forEach(function (key) {
-            let value = model[key]
+            let value = model[key];
             Object.defineProperty(model, key, {
                 get: function () {
                     return value;
                 },
                 set: function (new_value) {
-                    value = new_value
+                    value = new_value;
+
                     if (values[key]) {
-                        let inputs = values[key]
+                        let inputs = values[key];
                         inputs.forEach(function (input) {
-                            input.value = value
-                        })
+                            input.value = value;
+                        });
                     }
                     if (htmls[key]) {
-                        let spans = htmls[key]
+                        let spans = htmls[key];
                         spans.forEach(function (span) {
-                            span.textContent = value
+                            span.textContent = value;
                         })
                     }
                 }
             })
-            model[key] = value
+            model[key] = value;
         })
     }
 
@@ -110,11 +113,14 @@ class Leve{
         document.querySelector(id2).innerText = 
             document.querySelector(id1).children.texto1.value;
     }
+
     //issue #6
     insert(new_html){
-        this.save();
-        //this.#states.unshift(this.#element.innerText);
-        //this.#statesVar1.unshift(this.#var1);
-        this.#element.innerHTML += '<br>' + new_html;
+        if(new_html != undefined){
+            this.save();
+            //this.#states.unshift(this.#element.innerText);
+            //this.#statesVar1.unshift(this.#var1);
+            this.#element.innerHTML += '<br />' + new_html;
+        }
     }
 }
