@@ -5,28 +5,22 @@ class App{
  
     
 		//issue #1
-		//obj._id="app1";
-		//obj.mudarId("df");
+		//obj.mudarId("app1","df");
 		//issue #2
-		//obj._id="app1";
-		//obj.mudarVariavel("1","Mudança");
+		//obj.mudarVariavel("app1","1","Mudança");
 		//issue #3
-		//obj._id="app5";
-		//obj.armazenar();
+		//obj.armazenar("app5");
 		//issue #4
-		//obj._id="app2";
 		//obj.addObservador("app10");
-		// obj.addObservador("app3");
-		// obj.mudarEmTempo("var2");
+		 //obj.addObservador("app3");
+		 //obj.mudarEmTempo("app2","var2");
 		//issue #5
-		//obj._id="app2";
-		// obj.addObservador('app10');
+		//obj.addObservador('app10');
 		//obj.addObservador('app9');
-		//obj.comunicacaoComponentes();
+		//obj.comunicacaoComponentes("app2");
 		//issue #6
-		//obj._id="app2";
 		//obj.addObservador('app3');
-		//obj.injetarHTML();
+		//obj.injetarHTML("app2");
 		//obj.testeTestando();
 	}
 }
@@ -36,28 +30,30 @@ class leve{
 	constructor(){
 		this.obs=[];// Armazena os observadores
 		this.armazem=[];//Armazena o estado dos objetos
-		this._id;//O Id do do objeto em destaque
+    
+    
+    
 	}
   
 	//Issue 1# como parâmetro  a mudança a ser realizada
-	mudarId( mudanca) {
-		document.getElementById(this.noticaId()).innerHTML = mudanca;
+	mudarId( id,mudanca) {
+		document.getElementById(id).innerHTML = mudanca;
 	}
   
 	//Issue 2# Recebendo como parâmetro a variavel a ser modificada e a mudança a ser realizada
-	mudarVariavel( variavel, mudanca) {
-		let str = document.getElementById(this.noticaId()).innerHTML;
+	mudarVariavel(id, variavel, mudanca) {
+		let str = document.getElementById(id).innerHTML;
 		let res = str.replace(variavel, mudanca);
-		document.getElementById(this.noticaId()).innerHTML = res;
+		document.getElementById(id).innerHTML = res;
 	}
   
 	//Issue 3# percorre o vetor armazem e armazena o objeto requerido quando encontra um espaço vazio
-	armazenar(){
+	armazenar(id){
 		let i=0;
 		let b=false;
 		while(b==false){
 			if(this.armazem[i]==undefined){
-				this.armazem[i]= document.getElementById(this.noticaId());
+				this.armazem[i]= document.getElementById(id);
 				b=true;
 			}
 			i++;
@@ -65,13 +61,13 @@ class leve{
 	}
 	
 	//Issue 4# Recebe o  a mudança requerida
-	mudarEmTempo(va){  
+	mudarEmTempo(id,va){  
 		let v=[];//vetor auxiliar
 		let max=this.obs.length;//obtem o tamanho atual do vetor obs
 		v=this.obs;// atribui o vetor obs ao vetor auxiliar v
 		 setInterval((//Intervalo com um tempo de 100 para continuar chamando a função tss 
 			function tss(){
-				for(let e of document.getElementById(this.noticaId()).children){//Percorre os elementos filhos do elemento que teve seu id informado
+				for(let e of document.getElementById(id).children){//Percorre os elementos filhos do elemento que teve seu id informado
 					if(e.getAttribute('l:bind') != undefined){//Se há um input com l:bind entra no if
 						if(e.value==""){//se o input estiver vazio as variaveis não são substituidas
 							break;
@@ -91,13 +87,13 @@ class leve{
 	}
 	
 	//Issue 5# recebe o id do elemento observado
-	comunicacaoComponentes(){
+	comunicacaoComponentes(id){
 		let v=[];
 		let max=this.obs.length;
 		v=this.obs;
 		setInterval((
 			function r(){
-				for(let e of document.getElementById(this.noticaId()).children){
+				for(let e of document.getElementById(id).children){
 					if(e.getAttribute('l:bind') != undefined){
 						document.getElementById("let").addEventListener("click", function() {//adiciona um evento ao click do botão com id let	
 							for(let i=0;i<max;i++){
@@ -111,13 +107,13 @@ class leve{
 	}
 	
 	//Issue 6# recebe o id do eemento observado e  
-	injetarHTML(){
+	injetarHTML(id){
 		let v=[];
 		let max=this.obs.length;
 		v=this.obs;
 		setInterval((
 			function tss(){
-				for(let e of document.getElementById(this.noticaId()).children){
+				for(let e of document.getElementById(id).children){
 					if(e.getAttribute('l:bind') != undefined){
 						document.getElementById("let").addEventListener("click", function() {	
 							for(let i=0;i<max;i++){
@@ -131,15 +127,35 @@ class leve{
 	}
 	
 	//Adiciona observador ao vetor obs
-	addObservador(){
-		(this.obs).push(document.getElementById(this.noticaId()));
+	addObservador(id){
+		let aux1=true;
+		let max=this.obs.length;
+    
+       	for(let i=0;i<max;i++){
+     			if(this.obs[i]==""){
+      				this.obs[i]=document.getElementById(id);
+        			aux1=false;
+        			break;
+      			}
+		}
+    		if(aux1==true){
+    			(this.obs).push(document.getElementById(id));
+    		}
+   	
 	}
 	
 	//remove observador de acordo com o id passado
-	removeObservador(){
+	removeObservador(id){
 		let aux1;
-		aux1= this.obs.indexOf(this.noticaId());
-		this.obs.splice(aux1,1);
+      		let v=[];
+		let max=this.obs.length;
+		v=this.obs;
+        	for(let i=0;i<max;i++){
+        		if(this.obs[i]==document.getElementById(id)){
+             			this.obs[i]="";
+         	 	}
+		}
+    
 	}
 	  
 	noticaId(){
@@ -154,4 +170,4 @@ class leve{
 window.onload= function(){
 	app=new App();
 	app.run();
-}	
+}
