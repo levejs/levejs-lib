@@ -54,7 +54,13 @@
         app1.undo();
 
         let app2 = new Leve('#app3');
-        app2.reflect();
+        app2.reflect(
+            {
+                input_1: 'Hello World',
+                input_2: 'Olá Mundo',
+                input_3: 'Vòila'
+            }   
+        );
         //Leve.send('#app');
     </script>
 </body>

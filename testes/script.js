@@ -41,71 +41,61 @@ class Leve{
 
     //issue #4
     //Fonte: https://pt.stackoverflow.com/questions/297795/como-%C3%A9-o-processo-do-two-way-data-binding-com-js-puro
-    reflect(){
+    reflect(model){
         this.save();
-        var model = {
-            input_1: 'Hello World',
-            input_2: 'Olá Mundo',
-            input_3: 'Vòila'
-        };
+   
+        let values = document.querySelectorAll("[data-value]")
+        let htmls = document.querySelectorAll("[data-html]")
 
-        (function () {
-            let values = document.querySelectorAll("[data-value]")
-            let htmls = document.querySelectorAll("[data-html]")
-            values = [].reduce.call(values, function (values, value) {
-                if (!values[value.dataset.value])
-                values[value.dataset.value] = [];
-                values[value.dataset.value].push(value)
-                return values
-            }, {})
-            htmls = [].reduce.call(htmls, function (htmls, html) {
-                if (!htmls[html.dataset.html])
-                htmls[html.dataset.html] = [];
-                htmls[html.dataset.html].push(html)
-                return htmls
-            }, {})  
+        values = [].reduce.call(values, function (values, value) {
+            if (!values[value.dataset.value])
+            values[value.dataset.value] = [];
+            values[value.dataset.value].push(value)
+            return values
+        }, {})
 
-            let onValueInput = function (evt) {
-                model[this.key] = this.input.value
-            }
-            Object.keys(values).forEach(function (key) {
-                var inputs = values[key]
-                inputs.forEach(function (input) {
-                    input.addEventListener("input", onValueInput.bind({ key, input }))
-                })
+        htmls = [].reduce.call(htmls, function (htmls, html) {
+            if (!htmls[html.dataset.html])
+            htmls[html.dataset.html] = [];
+            htmls[html.dataset.html].push(html)
+            return htmls
+        }, {})  
+
+        let onValueInput = function (e) {
+            model[this.key] = this.input.value
+        }
+
+        Object.keys(values).forEach(function (key) {
+            var inputs = values[key]
+            inputs.forEach(function (input) {
+                input.addEventListener("input", onValueInput.bind({ key, input }))
             })
-            Object.keys(model).forEach(function (key) {
-                let _value = model[key]
-                Object.defineProperty(model, key, {
-                    get: function () {
-                        return _value;
-                    },
-                    set: function (value) {
-                        _value = value
-                        if (values[key]) {
-                            let inputs = values[key]
-                            inputs.forEach(function (input) {
-                                input.value = _value
-                            })
-                        }
-                        if (htmls[key]) {
-                            let spans = htmls[key]
-                            spans.forEach(function (span) {
-                                span.textContent = _value
-                            })
-                        }
+        })
+        
+        Object.keys(model).forEach(function (key) {
+            let _value = model[key]
+            Object.defineProperty(model, key, {
+                get: function () {
+                    return _value;
+                },
+                set: function (value) {
+                    _value = value
+                    if (values[key]) {
+                        let inputs = values[key]
+                        inputs.forEach(function (input) {
+                            input.value = _value
+                        })
                     }
-                })
-                model[key] = _value
+                    if (htmls[key]) {
+                        let spans = htmls[key]
+                        spans.forEach(function (span) {
+                            span.textContent = _value
+                        })
+                    }
+                }
             })
-        })();
-        /*
-        window.setTimeout(function () {
-            model.input_1 += " - deprecated"
-            model.input_2 += " - descontinuado"
-            model.input_3 += " - sei lá"
-            }, 5000)
-        */
+            model[key] = _value
+        })
     }
 
     //issue #5
