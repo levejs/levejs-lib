@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Testes para o projeto Leve.js</title>
-
-    <script src="script.js"></script>
 </head>
 <body>
     <h2>Exemplos que devem funcionar com o script adicionado no head deste html</h2>
@@ -16,7 +14,6 @@
     </div>
     Esta não: [[var1]]<br>
 
-
     <div id="app1">
         [[dado_externo_a_app1]]
     </div>
@@ -25,10 +22,30 @@
         <input l:bind="var1" type="text" id="texto1">
         <button onclick="Leve.send('#app2', '#app1')">Enviar para app 1</button>
     </div>
-
-    <div id="app6">
-
+    </br>
+    <div id="app3">
+        - Div app3:<br />
+        <br />
+        <span data-html="input_1">[[input_1]]</span>
+        <br />
+        <span data-html="input_2">[[input_2]]</span>
+        <br />
+        <span data-html="input_3">[[input_3]]</span>
+        <br />
+        <br />
+        <input type="text" data-value="input_1" />
+        <br />
+        <br />
+        <input type="text" data-value="input_2" />
+        <br />
+        <br />
+        <input type="text" data-value="input_3" />
+        <br />
+        <br />
     </div>
+
+    <div id="app4"></div>
+    <script src="script.js"></script>
 </body>
     <script>
         let app = new Leve('#app');
