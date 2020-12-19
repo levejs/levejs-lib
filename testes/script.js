@@ -51,7 +51,7 @@ class Leve{
         let values = document.querySelectorAll("[data-value]");
         let htmls = document.querySelectorAll("[data-html]");
 
-        values = [].reduce.call(values, function (values, value) {
+        values = [].reduce.call(values, function (values, value){
             if (!values[value.dataset.value])
                 values[value.dataset.value] = [];
             values[value.dataset.value].push(value);
@@ -59,43 +59,43 @@ class Leve{
             return values;
         }, {});
 
-        htmls = [].reduce.call(htmls, function (htmls, html) {
+        htmls = [].reduce.call(htmls, function (htmls, html){
             if (!htmls[html.dataset.html])
                 htmls[html.dataset.html] = [];
             htmls[html.dataset.html].push(html);
-            
+
             return htmls;
         }, {});  
 
-        let onValueInput = function (e) {
+        let onValueInput = function (e){
             model[this.key] = this.input.value;
         }
 
-        Object.keys(values).forEach(function (key) {
+        Object.keys(values).forEach(function (key){
             var inputs = values[key];
             inputs.forEach(function (input) {
                 input.addEventListener("input", onValueInput.bind({ key, input }));
             });
         });
 
-        Object.keys(model).forEach(function (key) {
+        Object.keys(model).forEach(function (key){
             let value = model[key];
-            Object.defineProperty(model, key, {
-                get: function () {
+            Object.defineProperty(model, key,{
+                get: function (){
                     return value;
                 },
-                set: function (new_value) {
+                set: function (new_value){
                     value = new_value;
 
-                    if (values[key]) {
+                    if (values[key]){
                         let inputs = values[key];
-                        inputs.forEach(function (input) {
+                        inputs.forEach(function (input){
                             input.value = value;
                         });
                     }
-                    if (htmls[key]) {
+                    if (htmls[key]){
                         let spans = htmls[key];
-                        spans.forEach(function (span) {
+                        spans.forEach(function (span){
                             span.textContent = value;
                         })
                     }

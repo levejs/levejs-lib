@@ -16,11 +16,13 @@
     -------------------------------------------------------------------------------------------------------------------------------------------------
     <br />
     <br />
-    App1: <div id="app1">
+    App1: 
+    <div id="app1">
         [[dado_externo_a_app1]]
     </div>
     <br /> 
-    App 2: <div id="app2">
+    App 2: 
+    <div id="app2">
         <input l:bind="var1" type="text" id="texto1">
         <button onclick="Leve.send('#app2', '#app1')">Enviar para app 1</button>
     </div>
@@ -35,13 +37,13 @@
         <span data-html="input_3">[[input_3]]</span>
         <br />
         <br />
-        <input type="text" data-value="input_1" />
+        Input 1: <input type="text" data-value="input_1" />
         <br />
         <br />
-        <input type="text" data-value="input_2" />
+        Input 2: <input type="text" data-value="input_2" />
         <br />
         <br />
-        <input type="text" data-value="input_3" />
+        Input 3: <input type="text" data-value="input_3" />
         <br />
         <br />
     </div>
@@ -58,9 +60,9 @@
         let app4 = new Leve('#app3');
         app4.reflect(
             {
-                input_1: 'Hello World',
-                input_2: 'Olá Mundo',
-                input_3: 'Voilà'
+                input_1: 'Linguagem de Programação 2',
+                input_2: 'Prof. Felipe Bastos',
+                input_3: 'Quero passar nessa disciplina :)'
             }   
         );
         let app6 = new Leve('#app6');
