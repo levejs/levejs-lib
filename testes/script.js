@@ -120,8 +120,6 @@ class Leve{
     //issue #5
     static send(id1, id2){
         //this.save();
-        //this.#states.unshift(this.#element.innerText);
-        //this.#statesVar1.unshift(this.#var1);
         document.querySelector(id2).innerText = 
             document.querySelector(id1).children.texto1.value;
     }
@@ -130,8 +128,6 @@ class Leve{
     insert(newHTML){
         if(newHTML != undefined){
             this.save();
-            //this.#states.unshift(this.#element.innerText);
-            //this.#statesVar1.unshift(this.#var1);
             this.#element.innerHTML += '<br />' + newHTML;
         }
     }
