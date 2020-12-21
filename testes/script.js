@@ -51,11 +51,12 @@ class Leve{
         let newHTML = "";
 
         for(let key in model)
-            newHTML += `<span data-html=\"${key}\">[[${key}]]</span><br />`;
+            newHTML += `<span data-html="${key}">[[${key}]]</span><br />`;
 
         for(let key in model){
+            //Input 1: <input type="text" data-value="input_1" />
             newHTML += `<br />${key[0].toUpperCase() + key.substr(1)}`;
-            newHTML += `: <input type="text" data-value=\"${key}\" /><br />`;
+            newHTML += `: <input type="text" data-value="${key}" /><br />`;
         }
 
         this.insert(newHTML);
@@ -86,7 +87,7 @@ class Leve{
         Object.keys(values).forEach(function (key){
             var inputs = values[key];
             inputs.forEach(function (input) {
-                input.addEventListener("input", onValueInput.bind());
+                input.addEventListener("input", onValueInput.bind({ key, input }));
             });
         });
 
@@ -120,6 +121,8 @@ class Leve{
     //issue #5
     static send(id1, id2){
         //this.save();
+        //this.#states.unshift(this.#element.innerText);
+        //this.#statesVar1.unshift(this.#var1);
         document.querySelector(id2).innerText = 
             document.querySelector(id1).children.texto1.value;
     }
@@ -128,6 +131,8 @@ class Leve{
     insert(newHTML){
         if(newHTML != undefined){
             this.save();
+            //this.#states.unshift(this.#element.innerText);
+            //this.#statesVar1.unshift(this.#var1);
             this.#element.innerHTML += '<br />' + newHTML;
         }
     }
