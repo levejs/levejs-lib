@@ -47,7 +47,19 @@ class Leve{
     */
     reflect(model){
         this.save();
-   
+
+        let newHTML = "";
+
+        for(let key in model)
+            newHTML += `<span data-html=\"${key}\">[[${key}]]</span><br />`;
+
+        for(let key in model){
+            newHTML += `<br />${key[0].toUpperCase() + key.substr(1)}`;
+            newHTML += `: <input type="text" data-value=\"${key}\" /><br />`;
+        }
+
+        this.insert(newHTML);
+
         let values = document.querySelectorAll("[data-value]");
         let htmls = document.querySelectorAll("[data-html]");
 
@@ -67,14 +79,14 @@ class Leve{
             return htmls;
         }, {});  
 
-        let onValueInput = function (e){
+        let onValueInput = function (){
             model[this.key] = this.input.value;
         }
 
         Object.keys(values).forEach(function (key){
             var inputs = values[key];
             inputs.forEach(function (input) {
-                input.addEventListener("input", onValueInput.bind({ key, input }));
+                input.addEventListener("input", onValueInput.bind());
             });
         });
 
@@ -84,8 +96,8 @@ class Leve{
                 get: function (){
                     return value;
                 },
-                set: function (new_value){
-                    value = new_value;
+                set: function (newValue){
+                    value = newValue;
 
                     if (values[key]){
                         let inputs = values[key];
@@ -115,12 +127,12 @@ class Leve{
     }
 
     //issue #6
-    insert(new_html){
-        if(new_html != undefined){
+    insert(newHTML){
+        if(newHTML != undefined){
             this.save();
             //this.#states.unshift(this.#element.innerText);
             //this.#statesVar1.unshift(this.#var1);
-            this.#element.innerHTML += '<br />' + new_html;
+            this.#element.innerHTML += '<br />' + newHTML;
         }
     }
 }
