@@ -1,3 +1,6 @@
+// Este projeto foi desenvolvido em colaboração com
+// discentes do curso BCC do IFCE campus Aracati
+
 class Leve {
     // Registro do Leve é estático
     // Precisei criar para facilitar os eventListeners
